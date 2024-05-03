@@ -24,8 +24,6 @@ class Pedido extends Model
     {
         return $this->belongsTo(Carrinho::class, 'carrinhoId', 'id');
     }
-
-
     public function cartao()
     {
         return $this->belongsTo(DadosCartao::class, 'cartaoId', 'id');
@@ -35,4 +33,7 @@ class Pedido extends Model
         return $this->belongsTo(Endereco::class, 'enderecoId', 'id');
     }
 }
+
+
+
 

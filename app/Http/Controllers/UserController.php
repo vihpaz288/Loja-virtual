@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrinho;
 use App\Models\DadosCartao;
 use App\Models\Endereco;
 use App\Models\produto;
@@ -43,6 +44,7 @@ class UserController extends Controller
     }
     public function logar(Request $request)
     {
+        // dd($request->all());
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect()->route('index');
         }
@@ -55,7 +57,13 @@ class UserController extends Controller
     public function index()
     {
         $produtos = Produto::with('image')->get();
-        return view('Index', compact('produtos'));
+        if (auth()->check()) {
+            $itens = Carrinho::with('produtos')->where('userId', auth()->user()->id)->where('finalizado', 'false')->get();
+        } else {
+            $itens = 0;
+        }
+        $search = request('search');
+        return view('Index', compact('produtos', 'itens'));
     }
     public function cartoes()
     {

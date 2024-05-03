@@ -53,6 +53,7 @@ Route::delete('carrinho/destroy/{id}', [CarrinhoController::class, 'destroy'])->
 
 Route::get('finaliza', [PedidoController::class, 'finalizar'])->name('finalizar');
 Route::post('store/pedido', [PedidoController::class, 'store'])->name('store.pedido');
+Route::get('relatorio/cliente', [PedidoController::class, 'relatorioCliente'])->name('relatorio.cliente');
 
 
 

@@ -11,23 +11,11 @@ class Carrinho extends Model
     use HasFactory;
     protected $table = 'carrinho';
     protected $fillable = [
-        'produtoID',
         'userId',
-        'imageId',
-        'quantidade',
         'finalizado'
     ];
-    public function produtos()
-    {
-        return $this->belongsTo(Produto::class, 'produtoID', 'id');
-    }
-    public function image()
-    {
-        return $this->belongsTo(ImageProduto::class, 'imageId', 'id');
-    }
-
     public function carrinho()
     {
-        return $this->hasMany(Carrinho::class, 'carrinhoId', 'id');
+        return $this->hasMany(ProdutoCarrinho::class, 'carrinhoId', 'id');
     }
 }
