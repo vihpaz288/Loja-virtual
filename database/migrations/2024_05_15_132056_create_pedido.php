@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('pedido', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('carrinhoId')->constrained('carrinho');
+            $table->foreignId('produtoCarrinhoId')->constrained('produtoCarrinho');
             $table->foreignId('cartaoId')->constrained('dadosCartao');
             $table->foreignId('enderecoId')->constrained('endereco');
+            $table->foreignId('statusId')->constrained('status');
             $table->timestamps();
         });
     }

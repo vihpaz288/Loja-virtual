@@ -19,37 +19,33 @@ class CarrinhoController extends Controller
 
         $verificaCarrinho = Carrinho::where('userId', auth()->user()->id)->where('finalizado', false)->first();
         // dd($verificaCarrinho);
-    if (!isset($verificaCarrinho)  ) {
-        $verificaCarrinho = Carrinho::create([
-            'userId' => auth()->user()->id,
-            'finalizado' => false,
+        if (!isset($verificaCarrinho)) {
+            $verificaCarrinho = Carrinho::create([
+                'userId' => auth()->user()->id,
+                'finalizado' => false,
+            ]);
+        }
+        // dd('a');
+        $valorTotal = Produto::find($request->produtoId)->valor * $request->quantidade;
+
+        $request->merge([
+            'carrinhoId' => $verificaCarrinho->id,
+            'valor' => $valorTotal,
         ]);
-    }
-    // dd('a');
-    $valorTotal = Produto::find($request->produtoId)->valor * $request->quantidade;
 
-    $request->merge([
-        'carrinhoId' => $verificaCarrinho->id,
-        'valor' => $valorTotal,
-    ]);
+        $produtoCarrinho = ProdutoCarrinho::create($request->all());
 
-    $produtoCarrinho = ProdutoCarrinho::create($request->all());
-
-       return redirect()->route('index');
+        return redirect()->route('index');
     }
     public function index()
     {
-        $carrinho = Carrinho::with('produtos.produtos.image')
-                         ->where('userId', auth()->user()->id)
-                         ->where('finalizado', false)
-                         ->first();
-        // $valorTotal = \Illuminate\Support\Facades\DB::select(
-        //     "SELECT SUM(valor) AS valorTotal
-        //     FROM produtoCarrinho
-        //     JOIN carrinho ON carrinho.id = produtoCarrinho.produtoId
-        //     WHERE carrinho.id = $carrinho->id
-        //     AND carrinho.finalizado = false");
-        //     dd($valorTotal);
+        $carrinho = ProdutoCarrinho::with(['produtos', 'produtos.image'])
+            ->whereHas('carrinho', function ($query) {
+                $query->where('userId', auth()->user()->id)
+                    ->where('finalizado', false);
+            })->get();
+
+
         return view('Carrinho.index', compact('carrinho'));
     }
 
@@ -58,6 +54,4 @@ class CarrinhoController extends Controller
         Carrinho::findOrFail($id)->delete();
         return redirect()->back();
     }
-
-
 }

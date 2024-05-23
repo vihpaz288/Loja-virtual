@@ -57,13 +57,13 @@ class UserController extends Controller
     public function index()
     {
         $produtos = Produto::with('image')->get();
-        if (auth()->check()) {
-            $itens = Carrinho::with('produtos')->where('userId', auth()->user()->id)->where('finalizado', 'false')->get();
-        } else {
-            $itens = 0;
-        }
+        // if (auth()->check()) {
+        //     $itens = Carrinho::with('produtos')->where('userId', auth()->user()->id)->where('finalizado', 'false')->get();
+        // } else {
+        //     $itens = 0;
+        // }
         $search = request('search');
-        return view('Index', compact('produtos', 'itens'));
+        return view('Index', compact('produtos'));
     }
     public function cartoes()
     {

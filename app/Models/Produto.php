@@ -15,15 +15,15 @@ class Produto extends Model
         'quantidade',
         'descrição',
     ];
-    public function Produtos()
+
+    public function produtos()
     {
-        return $this->hasMany(ProdutoCarrinho::class, 'produtoID', 'id');
+        return $this->hasMany(ProdutoCarrinho::class, 'produtoId', 'id');
     }
 
     public function image()
     {
         return $this->hasMany(ImageProduto::class, 'produtoId', 'id');
     }
-
 }
 

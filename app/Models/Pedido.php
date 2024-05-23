@@ -10,9 +10,10 @@ class Pedido extends Model
     use HasFactory;
     protected $table = 'Pedido';
     protected $fillable = [
-        'carrinhoId',
+        'produtoCarrinhoId',
         'cartaoId',
         'enderecoId',
+        'statusId',
     ];
 
     /**
@@ -20,10 +21,7 @@ class Pedido extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function carrinho()
-    {
-        return $this->belongsTo(Carrinho::class, 'carrinhoId', 'id');
-    }
+
     public function cartao()
     {
         return $this->belongsTo(DadosCartao::class, 'cartaoId', 'id');
@@ -31,6 +29,14 @@ class Pedido extends Model
     public function endereco()
     {
         return $this->belongsTo(Endereco::class, 'enderecoId', 'id');
+    }
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'statusId', 'id');
+    }
+    public function produtoCarrinho()
+    {
+        return $this->belongsTo(ProdutoCarrinho::class, 'produtoCarrinhoId', 'id');
     }
 }
 

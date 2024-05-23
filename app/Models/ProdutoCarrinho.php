@@ -15,14 +15,21 @@ class ProdutoCarrinho extends Model
         'quantidade',
         'valor',
     ];
-    public function Produtos()
+
+    // Altere este método de 'belongsTo' para 'hasMany'
+    public function produtos()
     {
-        return $this->belongsTo(Produto::class, 'produtoId', 'id');
+        return $this->hasMany(Produto::class, 'id', 'produtoId');
     }
 
     public function carrinho()
     {
         return $this->belongsTo(Carrinho::class, 'carrinhoId', 'id');
+    }
+
+    public function produtoCarrinho()
+    {
+        return $this->hasMany(ProdutoCarrinho::class, 'produtoCarrinhoId', 'id');
     }
 
 }

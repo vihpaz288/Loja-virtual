@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -179,4 +179,145 @@
 </script>
 
 
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
+        integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+</head>
+<style>
+    a.underlineHover:after {
+  display: block;
+  left: 0;
+  bottom: -10px;
+  width: 0;
+  height: 2px;
+  background-color: #808080;
+  content: "";
+  transition: width 0.2s;
+
+}
+
+a.underlineHover:hover {
+  color: #808080;
+}
+
+a.underlineHover:hover:after{
+  width: 100%;
+  color: #808080;
+}
+
+  
+
+</style>
+<body>
+<p>Dados pessoais</p>
+<table class="table align-middle mb-0 bg-white">
+  <thead class="bg-light">
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Senha</th>
+      <th>Editar</th>
+    </tr>
+  </thead>
+  <tbody>
+      <input type="hidden" id="_token" value="{{ csrf_token() }}">
+    <tr>
+      <td>
+          <div class="ms-3">
+            <p class="text-muted mb-0" id="valor_name{{$dados->id}}">{{$dados->name}}</p>
+          </div>
+        </div>
+      </td>
+      <td>
+       
+        <p class="text-muted mb-0" id="valor_email{{$dados->id}}">{{$dados->email}}</p>
+      </td>
+      <td>
+        <p class="text-muted mb-0" id="valor_password{{$dados->id}}"></p>
+      </td>
+      <td>
+        <button type="button" id='botao_editar{{ $dados->id }}' class="btn btn-link btn-sm btn-rounded" onclick='editar_registro({{ $dados->id }})'>
+          Editar
+        </button>
+        <button type="button" id='botao_salvar{{ $dados->id }}' class="btn btn-link btn-sm btn-rounded" onclick='salvar_registro({{ $dados->id }})' style="display: none;">
+          Salvar
+        </button>
+      </td>
+    </tr>
+ 
+  </tbody>
+</table>
+<hr>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
+    integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    function editar_registro(id) {
+        $(`#botao_salvar${id}`).show();
+        $(`#botao_editar${id}`).hide();
+        var name = document.getElementById("valor_name" + id);
+        var email = document.getElementById("valor_email" + id);
+        var password = document.getElementById("valor_password" + id);
+        name.innerHTML = "<input type='text' id='name_text" + id + "' value='" + name.innerHTML + "'>";
+        email.innerHTML = "<input type='text' id='email_text" + id + "' value='" + email.innerHTML + "'>";
+        password.innerHTML = "<input type='text' id='password_text" + id + "' value='" + password.innerHTML + "'>";
+    }
+
+    function salvar_registro(id) {
+        const name = $(`#name_text${id}`).val();
+        const email = $(`#email_text${id}`).val();
+        const password = $(`#password_text${id}`).val();
+        const _token = $('#_token').val();
+        document.getElementById("valor_name" + id).innerHTML = name;
+        document.getElementById("valor_email" + id).innerHTML = email;
+        document.getElementById("valor_password" + id).innerHTML = password;
+
+        $.ajax({
+            type: "put",
+            url: `/dado/update/${id}`,
+            data: {
+                name,
+                email,
+                password,
+                _token,
+            },
+            success: function(response) {
+                console.log(response)
+                iziToast.success({
+                    title: 'Atualizado',
+                    message: response.msg,
+                });
+            }
+        });
+        $(`#botao_salvar${id}`).hide();
+        $(`#botao_editar${id}`).show();
+    }
+</script>
 </html>

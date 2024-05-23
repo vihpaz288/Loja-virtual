@@ -203,17 +203,17 @@
             <h2>Cadastre o seu endereço</h2>
             <p>Preencha os campos para podermos enviar seus produtos</p>
         </div>
-        <form action="{{route('store.pedido')}}" id="address-form" method="POST">
+        <form action="{{ route('store.pedido') }}" id="address-form" method="POST">
             @csrf
             {{-- <input type="hidden" name="carrinhoId" value="{{$produtos->id}}"> --}}
 
-             @foreach ($produtos as $produto)
-                <input type="hidden" name="carrinhoId" value="{{ $produto->id }}" id="">
+            @foreach ($produtos as $produto)
+            {{-- @dd($produto->id); --}}
+                <input type="hidden" name="produtoCarrinhoId[]" value="{{ $produto->id }}">
             @endforeach
             {{-- <input type="hidden" name="valorTotal" value="{{ $produto->id }}" id=""> --}}
             <div class="col-12 col-sm-6 mb-3">
-                <select class="form-select shadow-none" name="enderecoId" id="endereco" required
-                    data-input>
+                <select class="form-select shadow-none" name="enderecoId" id="endereco" required data-input>
                     <option selected>Endereço</option>
 
                     @foreach ($enderecos as $endereco)
@@ -223,99 +223,13 @@
                 </select>
             </div>
 
-                    {{-- @csrf
-                    <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
-                    <div class="row mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control shadow-none" id="cep" name="CEP"
-                                placeholder="Digite o seu CEP" maxlength="8" minlength="8" required />
-                            <label for="cep">Digite o seu CEP</label>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-
-                        <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                            <input type="text" class="form-control shadow-none" id="nome" name="nome"
-                                placeholder="Digite como deseja chamar" disabled data-input />
-                            <label for="complement">Nome</label>
-                        </div>
-                        <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                            <input type="text" class="form-control shadow-none" id="address" name="rua"
-                                placeholder="Rua" disabled required data-input />
-                            <label for="address">Rua</label>
-                        </div>
-                        <div class="col-12 col-sm-6 form-floating">
-                            <input type="text" class="form-control shadow-none" id="number" name="numero"
-                                placeholder="Digite o número da residência" disabled required data-input />
-                            <label for="number">Digite o número da residência</label>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                            <input type="text" class="form-control shadow-none" id="complement" name="complemento"
-                                placeholder="Digite o complemento" disabled data-input />
-                            <label for="complement">Digite o complemento</label>
-                        </div>
-                        <div class="col-12 col-sm-6 form-floating">
-                            <input type="text" class="form-control shadow-none" id="neighborhood" name="bairro"
-                                placeholder="Bairro" disabled required data-input />
-                            <label for="neighborhood">Bairro</label>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                            <input type="text" class="form-control shadow-none" id="city" name="cidade"
-                                placeholder="Cidade" disabled required data-input />
-                            <label for="city">Cidade</label>
-                        </div>
-                        <div class="col-12 col-sm-6 mb-3">
-                            <select class="form-select shadow-none" id="region"
-                                name="Estado
-
-                    " disabled required data-input>
-                                <option selected>Estado</option>
-                                <option value="AC">Acre</option>
-                                <option value="AL">Alagoas</option>
-                                <option value="AP">Amapá</option>
-                                <option value="AM">Amazonas</option>
-                                <option value="BA">Bahia</option>
-                                <option value="CE">Ceará</option>
-                                <option value="DF">Distrito Federal</option>
-                                <option value="ES">Espírito Santo</option>
-                                <option value="GO">Goiás</option>
-                                <option value="MA">Maranhão</option>
-                                <option value="MT">Mato Grosso</option>
-                                <option value="MS">Mato Grosso do Sul</option>
-                                <option value="MG">Minas Gerais</option>
-                                <option value="PA">Pará</option>
-                                <option value="PB">Paraíba</option>
-                                <option value="PR">Paraná</option>
-                                <option value="PE">Pernambuco</option>
-                                <option value="PI">Piauí</option>
-                                <option value="RJ">Rio de Janeiro</option>
-                                <option value="RN">Rio Grande do Norte</option>
-                                <option value="RS">Rio Grande do Sul</option>
-                                <option value="RO">Rondônia</option>
-                                <option value="RR">Roraima</option>
-                                <option value="SC">Santa Catarina</option>
-                                <option value="SP">São Paulo</option>
-                                <option value="SE">Sergipe</option>
-                                <option value="TO">Tocantins</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="button" id="CadastrarEndereco">Cadastrar endereço</button>
-                </form>
-            </div> --}}
             <hr>
             <div id="form-header">
                 <h2>Escolha a forma de pagamento</h2>
                 <p>Preencha os campos para podermos enviar seus produtos</p>
             </div>
             <div class="col-12 col-sm-6 mb-3">
-                <select class="form-select shadow-none" id="opcaoPagamento" name="formaPagamento" required
-                    data-input>
+                <select class="form-select shadow-none" id="opcaoPagamento" name="formaPagamento" required data-input>
                     <option value="" disabled selected>Forma de pagamento</option>
                     <option value="1">Cartão cadastrado</option>
                     <option value="2">Novo cartão</option>
@@ -342,42 +256,12 @@
                     @endforeach
                 @endif
 
-                {{-- <option value="{{$cartao->id}}">{{$cartao->nome}}</option> --}}
-                {{-- <option value="outro">Cadastrar outro cartão</option> --}}
+
                 </select>
             </div>
+            <input type="hidden" name="statusId" value="1">
 
-            {{-- <div class="cartao" id="CadastrarCartao" style="display: none">
 
-                    @csrf
-                    <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
-                    <div class="row mb-3">
-                        <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                            <input type="text" class="form-control shadow-none" id="nome" name="nome"
-                                placeholder="Rua" required data-input />
-                            <label for="address">Nome</label>
-                        </div>
-                        <div class="col-12 col-sm-6 form-floating">
-                            <input type="text" class="form-control shadow-none" id="numero" name="numero"
-                                placeholder="Digite o número da residência"required data-input />
-                            <label for="number">Numero</label>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                            <input type="date" class="form-control shadow-none" id="vencimento" name="vencimento"
-                                placeholder="Digite o complemento" data-input />
-                            <label for="complement">Vencimento</label>
-                        </div>
-                        <div class="col-12 col-sm-6 form-floating">
-                            <input type="text" class="form-control shadow-none" id="cvv" name="cvv"
-                                placeholder="Bairro" required data-input />
-                            <label for="neighborhood">Cvv</label>
-                        </div>
-                    </div>
-                    <button type="submit">Cadastrar cartão</button>
-                </form>
-            </div> --}}
             <div class="pix" id="pix" style="display: none">
                 <div class="row mb-3">
                     <label id="pix" class="form-control shadow-none" name="pix" disabled data-input
@@ -386,22 +270,7 @@
                 </div>
             </div>
             <hr>
-            {{-- <div id="form-header">
-                <h2>Cadastre seu contato</h2>
-                <p>Preencha os campos para podermos enviar seus produtos</p>
-            </div>
-            <div class="row mb-3">
-                <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                    <input type="email" class="form-control shadow-none" id="address" name="email"
-                        placeholder="Email" required data-input />
-                    <label for="address">Email</label>
-                </div>
-                <div class="col-12 col-sm-6 form-floating">
-                    <input type="text" class="form-control shadow-none" id="number" name="telefone"
-                        placeholder="Telefone" required data-input />
-                    <label for="number">Telefone</label>
-                </div>
-            </div> --}}
+
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary">
                     Finalizar
@@ -411,140 +280,6 @@
     </div>
 </body>
 <script>
-    // const addressForm = document.querySelector("#address-form");
-    // const cepInput = document.querySelector("#cep");
-    // const addressInput = document.querySelector("#address");
-    // const cityInput = document.querySelector("#city");
-    // const neighborhoodInput = document.querySelector("#neighborhood");
-    // const regionInput = document.querySelector("#region");
-    // const formInputs = document.querySelectorAll("[data-input]");
-
-    // const closeButton = document.querySelector("#close-message");
-
-    // // Validate CEP Input
-    // cepInput.addEventListener("keypress", (e) => {
-    //     const onlyNumbers = /[0-9]|\./;
-    //     const key = String.fromCharCode(e.keyCode);
-
-    //     console.log(key);
-
-    //     console.log(onlyNumbers.test(key));
-
-    //     // allow only numbers
-    //     if (!onlyNumbers.test(key)) {
-    //         e.preventDefault();
-    //         return;
-    //     }
-    // });
-
-    // // Evento to get address
-    // cepInput.addEventListener("keyup", (e) => {
-    //     const inputValue = e.target.value;
-
-    //     //   Check if we have a CEP
-    //     if (inputValue.length === 8) {
-    //         getAddress(inputValue);
-    //     }
-    // });
-
-    // // Get address from API
-    // const getAddress = async (cep) => {
-    //     toggleLoader();
-
-    //     cepInput.blur();
-
-    //     const apiUrl = `https://viacep.com.br/ws/${cep}/json/`;
-
-    //     const response = await fetch(apiUrl);
-
-    //     const data = await response.json();
-
-    //     console.log(data);
-    //     console.log(formInputs);
-    //     console.log(data.erro);
-
-    //     // Show error and reset form
-    //     if (data.erro === "true") {
-    //         if (!addressInput.hasAttribute("disabled")) {
-    //             toggleDisabled();
-    //         }
-
-    //         addressForm.reset();
-    //         toggleLoader();
-    //         toggleMessage("CEP Inválido, tente novamente.");
-    //         return;
-    //     }
-
-    //     // Activate disabled attribute if form is empty
-    //     if (addressInput.value === "") {
-    //         toggleDisabled();
-    //     }
-
-    //     addressInput.value = data.logradouro;
-    //     cityInput.value = data.localidade;
-    //     neighborhoodInput.value = data.bairro;
-    //     regionInput.value = data.uf;
-
-    //     toggleLoader();
-    // };
-
-    // // Add or remove disable attribute
-    // const toggleDisabled = () => {
-    //     if (regionInput.hasAttribute("disabled")) {
-    //         formInputs.forEach((input) => {
-    //             input.removeAttribute("disabled");
-    //         });
-    //     } else {
-    //         formInputs.forEach((input) => {
-    //             input.setAttribute("disabled", "disabled");
-    //         });
-    //     }
-    // };
-
-    // // Show or hide loader
-    // const toggleLoader = () => {
-    //     const fadeElement = document.querySelector("#fade");
-    //     const loaderElement = document.querySelector("#loader");
-
-    //     fadeElement.classList.toggle("hide");
-    //     loaderElement.classList.toggle("hide");
-    // };
-
-    // // Show or hide message
-    // const toggleMessage = (msg) => {
-    //     const fadeElement = document.querySelector("#fade");
-    //     const messageElement = document.querySelector("#message");
-
-    //     const messageTextElement = document.querySelector("#message p");
-
-    //     messageTextElement.innerText = msg;
-
-    //     fadeElement.classList.toggle("hide");
-    //     messageElement.classList.toggle("hide");
-    // };
-
-    // // Close message modal
-    // closeButton.addEventListener("click", () => toggleMessage());
-
-    // Save address
-    // addressForm.addEventListener("submit", (e) => {
-    //     e.preventDefault();
-
-    //     toggleLoader();
-
-    //     setTimeout(() => {
-    //         toggleLoader();
-
-    //         toggleMessage("Endereço salvo com sucesso!");
-
-    //         addressForm.reset();
-
-    //         toggleDisabled();
-    //     }, 1000);
-    // });
-
-
-
     $('#opcaoPagamento').on('change', function() {
         let opcaoPagamento = $(this).val();
         if (opcaoPagamento == 1) {
