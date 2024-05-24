@@ -24,22 +24,17 @@ class PedidoController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
-        // dd( Carrinho::with('carrinho.produtos')->where('id', $request->produtoCarrinhoId)->first());
-        $carrinho = Carrinho::with('carrinho.produtos')->where('id', $request->produtoCarrinhoId)->first();
-        // dd($carrinho)
+
+        $carrinho = Carrinho::with('carrinho.produtos')->where('userId', auth()->user()->id)->where('finalizado', 0)->first();
         if (!$carrinho) {
             return redirect()->back()->with('error', 'Carrinho não encontrado.');
         }
         // Acesso direto aos produtos associados ao carrinho
-        // dd($carrinho->produtos as $produto);
-        // dd($carrinho->carrinho->produtos);
         foreach ($carrinho->carrinho as $produtoCarrinho) {
                         $produtoFind = Produto::find($produtoCarrinho->produtoId);
 
             if ($produtoFind) {
                 $novaQuantidadeEstoque = $produtoFind->quantidade - $produtoCarrinho->quantidade;
-// dd( $novaQuantidadeEstoque);
                 if ($novaQuantidadeEstoque >= 0) {
                     $produtoFind->update(['quantidade' => $novaQuantidadeEstoque]);
                 } else {
@@ -48,20 +43,19 @@ class PedidoController extends Controller
                 // Tratar o caso em que o produto não é encontrado
             }
         }
-
-        
-        // dd($request->statusId);
         Pedido::create([
             'enderecoId' => $request->enderecoId,
             'produtoCarrinhoId' => $request->produtoCarrinhoId[0],
             'cartaoId' => $request->cartaoId,
             'statusId' => $request->statusId,
         ]);
+       
+        $update = $carrinho->update(['finalizado' => true]);
 
-        $carrinho->update(['finalizado' => true]);
-
-        return redirect()->route('index');
-
+        if ($update) {
+            return redirect()->route('index');
+        }
+        
     }
 
 

@@ -51,7 +51,7 @@
                         <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="">Pedidos</a>
+                        <a class="nav-link text-white" href="{{route('relatorio.cliente')}}">Pedidos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('index.carrinho') }}">

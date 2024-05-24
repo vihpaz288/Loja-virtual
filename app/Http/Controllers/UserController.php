@@ -112,15 +112,19 @@ class UserController extends Controller
     }
     public function dados($id)
     {
+        $user = Auth::user();
         $dados = User::findOrFail($id);
-        return view('User.dados', compact('dados'));
+        $cartoes = DadosCartao::all();
+        $enderecos = Endereco::where('userId', $user->id)->get();
+        return view('User.dados', compact('dados', 'cartoes', 'enderecos'));
     }
     public function updateDados(Request $request, $id)
     {
+        dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'password' => 'required|string|min:6',
+            'password' => 'string|min:6',
         ]);
         $dados = User::findOrFail($id);
         $dados->name = $request->input('name');
