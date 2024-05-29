@@ -79,6 +79,7 @@
         </div>
 
         <table class="report-table">
+            <a href="{{route('endereco')}}"></a>
             <thead>
                 <tr>
                     <th>Cliente</th>

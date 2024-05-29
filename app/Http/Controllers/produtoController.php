@@ -24,7 +24,7 @@ class produtoController extends Controller
     }
     public function store(Request $request)
     {
-        try {
+       
 
 
             // if ($request->file("file1")) {
@@ -33,10 +33,10 @@ class produtoController extends Controller
             // }
             // dd($request->except('file1', '_token'));
 
-            DB::beginTransaction();
+           
             $criar = Produto::create($request->except('file1', '_token'));
             if (!$criar) {
-                DB::rollBack();
+               
                 return redirect()->back()->with('falha', 'Não foi possivel criar o produto');
             }
 
@@ -47,17 +47,16 @@ class produtoController extends Controller
                     'image'        => $caminhoDaImagem
                 ]);
                 if (!$criarProduto) {
-                    DB::rollBack();
+                  
                     return redirect()->back()->with('falha', 'Não foi possivel criar o produto');
                 }
             }
 
-            DB::commit();
+          
             return redirect()->route('index')->with('success', 'Produto cadastrado com sucesso.');
-        } catch (\Exception $ex) {
-            DB::rollBack();
-            return redirect()->back();
-        }
+      
+        
+        
     }
     public function detalhes($id)
     {

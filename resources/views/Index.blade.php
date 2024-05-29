@@ -35,13 +35,17 @@
                         <a class="nav-link text-white" href="{{route('index')}}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="">Dados</a>
+                        <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="">Produtos</a>
+                        <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
+                
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="">Pedidos</a>
+                        <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.vendas')}}">Relatorio</a>
                     </li>
                     @else
                     <li class="nav-item">
@@ -126,7 +130,7 @@
                         <form action="{{ route('produto.destroy', ['id' => $produto->id]) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn  mt-2 d-block text-light" style="background-color: #000000; btn:hover: background-color: #808080;">
+                            <button type="submit" class="btn mx-auto mt-2 d-block text-light" style="background-color: #000000; btn:hover: background-color: #808080;">
                                 Deletar produto
                             </button>
                         </form>

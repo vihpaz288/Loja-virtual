@@ -35,8 +35,58 @@
     }
 </style>
 
-<body>
-    <p>Dados pessoais</p>
+<body style="min-width: 372px;">
+    <nav style="background-color: #000000;" class="navbar navbar-expand-lg navbar-dark border-bottom shadow-sm mb-3">
+        <div class="container">
+            <a class="navbar-brand" href=""><strong>Loja virtual</strong></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbar-collapse">
+                <span class="navbar-toggle-icon"></span>
+            </button>
+            <div class="align-self-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="">{{ Auth::user()->name }}</a>
+                    </li>
+                    @if (auth()->check())
+                    @if (auth()->user()->permissaoID == 1)
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('index')}}">Home</a>
+                    </li>
+                   
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
+                
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Relatorio</a>
+                    </li>
+                    @else
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.cliente')}}">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('index.carrinho') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
+                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708" />
+                            </svg>
+                        </a>
+                    </li>
+                    @endif
+                    @endif
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('sair') }}">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+   
     <table class="table align-middle mb-0 bg-white">
         <thead class="bg-light">
             <tr>
@@ -59,17 +109,19 @@
                 <td id="valor_password{{$dados->id}}">
                 </td>
                 <td>
-                    <button class="btn btn-link btn-sm btn-rounded" id='botao_editar{{ $dados->id }}' class="btn btn-link btn-sm btn-rounded" onclick='editar_registro({{ $dados->id }})'>
+                    <button class="btn btn-link btn-sm btn-rounded" id='botao_editar{{ $dados->id }}' class="btn btn-link btn-sm btn-rounded" style="color:#000000;" onclick='editar_registro({{ $dados->id }})'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
                         </svg>
-
-                        <button type="button" id='botao_salvar{{ $dados->id }}' class="btn btn-link btn-sm btn-rounded" onclick='salvar_registro({{ $dados->id }})' style="display: none;">
+                        <button type="button" id='botao_salvar{{ $dados->id }}' class="btn btn-link btn-sm btn-rounded"  onclick='salvar_registro({{ $dados->id }})' style="display: none; color:#000000">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
                                 <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z" />
                             </svg>
                         </button>
+                        @if (auth()->check())
+                                @if (auth()->user()->permissaoID == 2)
+
                         <button type="button" class="btn btn-link btn-sm btn-rounded" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card" viewBox="0 0 16 16">
                                 <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />
@@ -82,6 +134,8 @@
                             </svg>
                         </button>
                 </td>
+                @endif
+                @endif
             </tr>
 
         </tbody>
@@ -90,6 +144,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <h5 class="modal-title" id="staticBackdropLabel" style="text-align: center;">Cartão cadastrado</h5>
+                <a href="{{route('cartao')}}"> Endereço</a>
                 <div class="modal-header">
                     <table class="table align-middle mb-0 bg-white">
                         <thead class="bg-light">
@@ -141,6 +196,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <h5 class="modal-title" id="staticBackdropLabel" style="text-align: center;">Endereço cadastrado</h5>
+                <a href="{{route('endereco')}}"> Endereço</a>
                 <div class="modal-header">
                     <table class="table align-middle mb-0 bg-white">
                         <thead class="bg-light">

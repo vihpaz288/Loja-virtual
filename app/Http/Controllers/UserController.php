@@ -120,12 +120,8 @@ class UserController extends Controller
     }
     public function updateDados(Request $request, $id)
     {
-        dd($request->all());
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'password' => 'string|min:6',
-        ]);
+      
+    
         $dados = User::findOrFail($id);
         $dados->name = $request->input('name');
         $dados->email = $request->input('email');
