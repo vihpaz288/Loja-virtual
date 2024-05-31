@@ -15,6 +15,37 @@
     .btn:hover {
         background-color: #808080;
     }
+    .navbar-nav li.nav-item {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-nav li.nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background-color: #ffffff; /* Cor da animação */
+        transition: all 0.3s ease;
+    }
+
+    .navbar-nav li.nav-item:hover::after {
+        width: 100%;
+    }
+    .navbar-nav .nav-link.active::after,
+    .navbar-nav .nav-link[href="{{route('index')}}"]::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #ffffff; /* Cor da borda branca */
+        transition: none; /* Evita a animação ao selecionar */
+    }
+
 </style>
 
 <body style="min-width: 372px;">
@@ -26,9 +57,6 @@
             </button>
             <div class="align-self-end">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="">{{ Auth::user()->name }}</a>
-                    </li>
                     @if (auth()->check())
                     @if (auth()->user()->permissaoID == 1)
                     <li class="nav-item">
@@ -136,11 +164,11 @@
                         </form>
                         @else
                         @if ($produto->quantidade >= 1)
-                        <button type="button" class="btn  mt-2 d-block text-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ $produto->id }}" style="background-color: #000000; btn:hover: background-color: #808080;">
+                        <button type="button" class="btn mx-auto mt-2 d-block text-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ $produto->id }}" style="background-color: #000000; btn:hover: background-color: #808080;">
                             Adicionar ao Carrinho
                         </button>
                         @else
-                        <button type="button" class="btn  mt-2 d-block text-light disabled" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ $produto->id }}" style="background-color: #000000; btn:hover: background-color: #808080;">
+                        <button type="button" class="btn mx-auto mt-2 d-block text-light disabled" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ $produto->id }}" style="background-color: #000000; btn:hover: background-color: #808080;">
                             Adicionar ao Carrinho
                         </button>
                         @endif

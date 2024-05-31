@@ -82,6 +82,36 @@
         border-radius: 10px;
         color: black;
     }
+    .navbar-nav li.nav-item {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-nav li.nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background-color: #ffffff; /* Cor da animação */
+        transition: all 0.3s ease;
+    }
+
+    .navbar-nav li.nav-item:hover::after {
+        width: 100%;
+    }
+    .navbar-nav .nav-link.active::after,
+    .navbar-nav .nav-link[href="{{route('relatorio.vendedor')}}"]::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #ffffff; /* Cor da borda branca */
+        transition: none; /* Evita a animação ao selecionar */
+    }
     </style>
 </head>
 
@@ -93,11 +123,9 @@
                 <span class="navbar-toggle-icon"></span>
             </button>
             <div class="align-self-end">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="">{{ Auth::user()->name }}</a>
-                    </li>
-
+            <ul class="navbar-nav">
+                    @if (auth()->check())
+                    @if (auth()->user()->permissaoID == 1)
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('index')}}">Home</a>
                     </li>
@@ -106,12 +134,33 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
-
+                
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('relatorio.vendas')}}">Relatorio</a>
                     </li>
-
+                    @else
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.cliente')}}">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('index.carrinho') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
+                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708" />
+                            </svg>
+                        </a>
+                    </li>
+                    @endif
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('sair') }}">Sair</a>
                     </li>

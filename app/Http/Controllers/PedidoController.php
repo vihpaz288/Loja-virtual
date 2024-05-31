@@ -97,11 +97,10 @@ class PedidoController extends Controller
             ->groupBy('produtoId')
             ->orderByDesc('total_vendas')
             ->first();
-            $produtoIdMaisVendido = $produtoMaisVendido->produtoId;
-            $totalVendasProdutoMaisVendido = $produtoMaisVendido->total_vendas;
-            $produtoMaisVendidoNome = Produto::find($produtoIdMaisVendido)->nome;
-            // dd($totalVendasProdutoMaisVendido);
-           
+        $produtoIdMaisVendido = $produtoMaisVendido->produtoId;
+        $totalVendasProdutoMaisVendido = $produtoMaisVendido->total_vendas;
+        $produtoMaisVendidoNome = Produto::find($produtoIdMaisVendido)->nome;
+
         $produtoMenosVendido = DB::table('produtocarrinho')
             ->select('produtoId', DB::raw('SUM(quantidade) as total_vendas'))
             ->groupBy('produtoId')
@@ -110,10 +109,11 @@ class PedidoController extends Controller
         $produtoIdMenosVendido = $produtoMenosVendido->produtoId;
         $totalVendasProdutoMenosVendido = $produtoMenosVendido->total_vendas;
         $produtoMenosVendidoNome = Produto::find($produtoIdMenosVendido)->nome;
-        $quantidadeTotalProdutos = DB::table('produtocarrinho')
-        ->sum('quantidade');        
-        return view('Pedido.relatorioVendas', compact('produtoMaisVendidoNome', 'totalVendasProdutoMaisVendido', 'produtoMenosVendidoNome', 'totalVendasProdutoMenosVendido', 'quantidadeTotalProdutos'));
 
+        $quantidadeTotalProdutos = DB::table('produtocarrinho')
+            ->sum('quantidade');
+            
+        return view('Pedido.relatorioVendas', compact('produtoMaisVendidoNome', 'totalVendasProdutoMaisVendido', 'produtoMenosVendidoNome', 'totalVendasProdutoMenosVendido', 'quantidadeTotalProdutos'));
     }
 
     public function relatorioDados($id)

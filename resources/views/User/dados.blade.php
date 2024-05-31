@@ -33,6 +33,49 @@
         width: 100%;
         color: #808080;
     }
+    .navbar-nav li.nav-item {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-nav li.nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background-color: #ffffff; /* Cor da animação */
+        transition: all 0.3s ease;
+    }
+
+    .navbar-nav li.nav-item:hover::after {
+        width: 100%;
+    }
+    .navbar-nav .nav-link.active::after,
+    .navbar-nav .nav-link[href="{{route('dados', Auth::user()->id)}}"]::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #ffffff; /* Cor da borda branca */
+        transition: none; /* Evita a animação ao selecionar */
+    }
+  
+
+.link {
+        color: black; /* Cor do link (azul) */
+        text-decoration: none; /* Remove o sublinhado padrão */
+        font-weight: bold; /* Define a espessura da fonte como negrito */
+        transition: color 0.3s ease; /* Adiciona uma transição suave na cor */
+    }
+
+    .link:hover {
+        color: #808080; /* Cor do link ao passar o mouse (tom mais escuro de azul) */
+    }
+
 </style>
 
 <body style="min-width: 372px;">
@@ -44,15 +87,14 @@
             </button>
             <div class="align-self-end">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="">{{ Auth::user()->name }}</a>
-                    </li>
                     @if (auth()->check())
                     @if (auth()->user()->permissaoID == 1)
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('index')}}">Home</a>
                     </li>
-                   
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
                 
@@ -61,7 +103,7 @@
                         <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Relatorio</a>
+                        <a class="nav-link text-white" href="{{route('relatorio.vendas')}}">Relatorio</a>
                     </li>
                     @else
                     <li class="nav-item">
@@ -122,13 +164,13 @@
                         @if (auth()->check())
                                 @if (auth()->user()->permissaoID == 2)
 
-                        <button type="button" class="btn btn-link btn-sm btn-rounded" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <button type="button" class="btn btn-link btn-sm btn-rounded" data-bs-toggle="modal" style="color:#000000;" data-bs-target="#staticBackdrop">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card" viewBox="0 0 16 16">
                                 <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />
                                 <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
                             </svg>
                         </button>
-                        <button class="btn btn-link btn-sm btn-rounded" data-bs-toggle="modal" data-bs-target="#staticBackdropEnd">
+                        <button class="btn btn-link btn-sm btn-rounded" style="color:#000000;" data-bs-toggle="modal" data-bs-target="#staticBackdropEnd">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
                                 <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z" />
                             </svg>
@@ -144,7 +186,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <h5 class="modal-title" id="staticBackdropLabel" style="text-align: center;">Cartão cadastrado</h5>
-                <a href="{{route('cartao')}}"> Endereço</a>
+                <a class="link" href="{{route('cartao')}}"> Deseja cadastrar novo cartão? Clique aqui</a>
                 <div class="modal-header">
                     <table class="table align-middle mb-0 bg-white">
                         <thead class="bg-light">
@@ -164,14 +206,14 @@
                                 <td id="valor_numero{{$cartao->id}}">{{ $cartao->numero }}</td>
                                 <td id="valor_vencimento{{$cartao->id}}">{{ $cartao->vencimento }}</td>
                                 <td id="valor_cvv{{$cartao->id}}">{{$cartao->cvv}}</td>
-                                <td><button type='button' id='botao_editar{{ $cartao->id }}' class="btn btn-link btn-sm btn-rounded" onclick='editar_registroCart({{ $cartao->id }})'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <td><button type='button' id='botao_editar{{ $cartao->id }}' class="btn btn-link btn-sm btn-rounded" style="color:#000000;" onclick='editar_registroCart({{ $cartao->id }})'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
                                         </svg></button>
-                                    <button type='button' id='botao_salvar{{ $cartao->id }}' class="btn btn-link btn-sm btn-rounded" onclick='salvar_registroCart({{ $cartao->id }})' style="display: none;"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                                    <button type='button' id='botao_salvar{{ $cartao->id }}' class="btn btn-link btn-sm btn-rounded" style="color:#000000; display:none;" onclick='salvar_registroCart({{ $cartao->id }})' style="display: none;"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
                                             <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z" />
                                         </svg></button>
-                                    <button type="submit" class="btn btn-link btn-sm btn-rounded" onclick="deletarCartao({{$cartao->id}})">
+                                    <button type="submit" class="btn btn-link btn-sm btn-rounded" style="color:#000000;" onclick="deletarCartao({{$cartao->id}})">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
                                         </svg>
@@ -196,7 +238,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <h5 class="modal-title" id="staticBackdropLabel" style="text-align: center;">Endereço cadastrado</h5>
-                <a href="{{route('endereco')}}"> Endereço</a>
+                <a class="link" href="{{route('endereco')}}">Deseja cadastrar novo endereço? Clique aqui</a>
                 <div class="modal-header">
                     <table class="table align-middle mb-0 bg-white">
                         <thead class="bg-light">
@@ -272,7 +314,6 @@
         email.innerHTML = "<input type='text' id='email_text" + id + "' value='" + email.innerHTML + "'>";
         telefone.innerHTML = "<input type='text' id='name_text" + id + "' value='" + telefone.innerHTML + "'>";
         dataNascimento.innerHTML = "<input type='text' id='name_text" + id + "' value='" + dataNascimento.innerHTML + "'>";
-
         password.innerHTML = "<input type='text' id='password_text" + id + "' value='" + password.innerHTML + "'>";
     }
 
@@ -351,15 +392,11 @@
         var numero = document.getElementById("valor_numero" + id);
         var vencimento = document.getElementById("valor_vencimento" + id);
         var cvv = document.getElementById("valor_cvv" + id);
-
-
         nome.innerHTML = "<input type='text' id='nome_text" + id + "' value='" + nome.innerHTML + "'>";
         numero.innerHTML = "<input type='text' id='numero_text" + id + "' value='" + numero.innerHTML + "'>";
         vencimento.innerHTML = "<input type='text' id='vencimento_text" + id + "' value='" + vencimento.innerHTML +
             "'>";
         cvv.innerHTML = "<input type='text' id='cvv_text" + id + "' value='" + cvv.innerHTML + "'>";
-
-
     }
 
     function salvar_registroCart(id) {
@@ -367,7 +404,6 @@
         const numero = $(`#numero_text${id}`).val();
         const vencimento = $(`#vencimento_text${id}`).val();
         const cvv = $(`#cvv_text${id}`).val();
-
         const _token = $('#_token').val();
         document.getElementById("valor_nome" + id).innerHTML = nome;
         document.getElementById("valor_numero" + id).innerHTML = numero;
@@ -403,7 +439,7 @@
             type: "delete",
             url: `/endereco/delete/${id_endereco}`,
             data: {
-                _token: '{{ csrf_token() }}' // Certifique-se de que está definido corretamente
+                _token: '{{ csrf_token() }}' 
             },
             success: function(response) {
                 $(`.tr-endereco-${id_endereco}`).remove();
@@ -426,7 +462,6 @@
             }
         });
     }
-
 
     function editar_registroEnd(id) {
         $(`#botao_salvar${id}`).show();

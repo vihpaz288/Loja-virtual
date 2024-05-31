@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Termwind\Components\Dd;
 
 class UserController extends Controller
 {
@@ -65,11 +66,12 @@ class UserController extends Controller
         $search = request('search');
         return view('Index', compact('produtos'));
     }
-    public function cartoes()
-    {
-        $cartoes = DadosCartao::all();
-        return view('User.Cartao', compact('cartoes'));
-    }
+    // public function cartoes()
+    // {
+    //     $user = Auth::user();
+    //     $cartoes = DadosCartao::where('userId', $user->id)->get();
+    //     return view('User.dados', compact('cartoes'));
+    // }
     public function cartao()
     {
         return view('User.createCartao');
@@ -77,7 +79,7 @@ class UserController extends Controller
     public function storeCartao(Request $request)
     {
         $criar = DadosCartao::create($request->all());
-        return redirect()->route('cartoes');
+        return redirect()->route('index');
     }
     public function cartaoUpdate(Request $request, $id)
     {
@@ -114,7 +116,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $dados = User::findOrFail($id);
-        $cartoes = DadosCartao::all();
+        $cartoes = DadosCartao::where('userId', $user->id)->get();
         $enderecos = Endereco::where('userId', $user->id)->get();
         return view('User.dados', compact('dados', 'cartoes', 'enderecos'));
     }
@@ -132,12 +134,12 @@ class UserController extends Controller
             'data' => $dados,
         ]);
     }
-    public function enderecos()
-    {
-        $user = Auth::user();
-        $enderecos = Endereco::where('userId', $user->id)->get();
-        return view('User.endereco', compact('enderecos'));
-    }
+    // public function enderecos()
+    // {
+    //     $user = Auth::user();
+    //     $enderecos = Endereco::where('userId', $user->id)->get();
+    //     return view('User.endereco', compact('enderecos'));
+    // }
     public function endereco()
     {
         return view('User.createEndereco');

@@ -69,6 +69,41 @@
         .btn:hover {
             background-color: #808080;
         }
+
+        .navbar-nav li.nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav li.nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #ffffff;
+            /* Cor da animação */
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav li.nav-item:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active::after,
+        .navbar-nav .nav-link[href="{{route('create.produto')}}"]::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ffffff;
+            /* Cor da borda branca */
+            transition: none;
+            /* Evita a animação ao selecionar */
+        }
     </style>
 </head>
 
@@ -81,9 +116,6 @@
             </button>
             <div class="align-self-end">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="">{{ Auth::user()->name }}</a>
-                    </li>
                     @if (auth()->check())
                     @if (auth()->user()->permissaoID == 1)
                     <li class="nav-item">
@@ -93,10 +125,14 @@
                         <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
+                
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Relatorio</a>
+                        <a class="nav-link text-white" href="{{route('relatorio.vendas')}}">Relatorio</a>
                     </li>
                     @else
                     <li class="nav-item">
@@ -167,16 +203,16 @@
                     </form>
 
                     <script>
-             function formatarMoeda(input) {
-    // Remove todos os caracteres não numéricos
-    var valorNumerico = input.value.replace(/\D/g, "");
+                        function formatarMoeda(input) {
+                            // Remove todos os caracteres não numéricos
+                            var valorNumerico = input.value.replace(/\D/g, "");
 
-    // Transforma em número com duas casas decimais
-    var valorFloat = parseFloat(valorNumerico / 100).toFixed(2);
+                            // Transforma em número com duas casas decimais
+                            var valorFloat = parseFloat(valorNumerico / 100).toFixed(2);
 
-    // Atualiza o valor do campo com o formato correto
-    input.value = valorFloat;
-}
+                            // Atualiza o valor do campo com o formato correto
+                            input.value = valorFloat;
+                        }
                     </script>
 
                 </div>
