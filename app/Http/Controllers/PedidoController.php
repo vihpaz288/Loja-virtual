@@ -11,6 +11,7 @@ use App\Models\ProdutoCarrinho;
 use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Termwind\Components\Dd;
 
 class PedidoController extends Controller
 {
@@ -59,14 +60,34 @@ class PedidoController extends Controller
 
     public function relatorioCliente()
     {
-        $pedidos = ProdutoCarrinho::with('carrinho')->with('produtos')
-            ->whereHas('carrinho', function ($query) {
-                $query->where('userId', auth()->user()->id)->where('finalizado', true);
-            })
-            ->get();
-        $status = Pedido::with('status')->get();
+        $userId = auth()->user()->id;
+
+        // $pedidos = Pedido::whereHas('produtoCarrinho.carrinho', function ($query) use ($userId) {
+        //     $query->where('userId', $userId)->where('finalizado', true); 
+        // })
+        // ->with([
+        //     'endereco', 
+        //     'status', 
+        //     'produtoCarrinho' => function ($query) {
+        //         $query->with('produtos'); 
+        //     },
+        //     'produtoCarrinho.carrinho' => function ($query) use ($userId) {
+        //         $query->where('userId', $userId)->where('finalizado', true); 
+        //     }
+        // ])
+        // ->get();
+        
+        $pedidos = Pedido::whereHas('produtoCarrinho.carrinho', function ($query) use ($userId) {
+            $query->where('userId', $userId)->where('finalizado', true);
+        })->with(['produtoCarrinho.produtos', 'status'])->get();
+        
+       
+        
+     dd($pedidos);
+        
+     
         $dataAtual = date('d-m-Y H:i:s');
-        return view('Pedido.relatorioCliente', compact('pedidos', 'dataAtual', 'status'));
+        return view('Pedido.relatorioCliente', compact('pedidos', 'dataAtual'));
     }
 
     public function relatorioVendedor()

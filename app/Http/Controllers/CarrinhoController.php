@@ -10,48 +10,54 @@ use Illuminate\Http\Request;
 
 class CarrinhoController extends Controller
 {
-    // public function index()
-    // {
-    //     return view('Carrinho.index');
-    // }
     public function store(Request $request)
     {
 
-        $verificaCarrinho = Carrinho::where('userId', auth()->user()->id)->where('finalizado', false)->first();
-        // dd($verificaCarrinho);
+        $verificaCarrinho = Carrinho::with('carrinho')->where('userId', auth()->user()->id)->where('finalizado', false)->first();
+
         if (!isset($verificaCarrinho)) {
             $verificaCarrinho = Carrinho::create([
                 'userId' => auth()->user()->id,
                 'finalizado' => false,
             ]);
         }
-        // dd('a');
-        $valorTotal = Produto::find($request->produtoId)->valor * $request->quantidade;
 
-        $request->merge([
-            'carrinhoId' => $verificaCarrinho->id,
-            'valor' => $valorTotal,
-        ]);
+        $produto = Produto::find($request->produtoId);
 
-        $produtoCarrinho = ProdutoCarrinho::create($request->all());
+        $verificaExistenciaDoProduto = $verificaCarrinho->carrinho->where('produtoId', '=', $produto->id)->first();
+        if (isset($verificaExistenciaDoProduto)) {
+            $quantidade = $verificaExistenciaDoProduto->quantidade + $request->quantidade;
+            $valor =  $quantidade * $produto->valor;
+            $verificaExistenciaDoProduto->update([
+                'quantidade' => $quantidade,
+                'valor' => $valor,
+            ]);
+        } else {
+            $valorTotal = $request->quantidade * $produto->valor;
+            $request->merge([
+                'carrinhoId' => $verificaCarrinho->id,
+                'valor' => $valorTotal,
+            ]);
+            $produtoCarrinho = ProdutoCarrinho::create($request->all());
+        }
 
         return redirect()->route('index');
     }
     public function index()
     {
+
         $carrinho = ProdutoCarrinho::with(['produtos', 'produtos.image'])
             ->whereHas('carrinho', function ($query) {
                 $query->where('userId', auth()->user()->id)
                     ->where('finalizado', false);
             })->get();
-
-
+        dd($carrinho);
         return view('Carrinho.index', compact('carrinho'));
     }
 
     public function destroy($id)
     {
-        Carrinho::findOrFail($id)->delete();
+        ProdutoCarrinho::findOrFail($id)->delete();
         return redirect()->back();
     }
 }

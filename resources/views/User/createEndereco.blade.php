@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Autocomplete Endereço</title>
+    <title>Criar endereço</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -15,7 +15,7 @@
     <!-- Bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" />
     <style>
-        :root {
+    :root {
             --bg-color: #04044c;
             --secondary-bg-color: #494a7d;
             --primary-color: #fff;
@@ -23,148 +23,198 @@
             --text-color: #8789af;
             --border-color: #20235b;
         }
-
         #checkout-page {
-            background-color: var(--bg-color);
-            color: var(--primary-color);
+            color: black;
         }
-
-        /* Message */
-        #fade {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-        }
-
+      
         #fade .spinner-border {
             width: 60px;
             height: 60px;
         }
-
         .hide {
             display: none !important;
         }
-
         #message {
             width: 40%;
         }
-
         .alert.alert-light p {
             border-bottom: 1px solid #333;
             padding: 1.2em 0;
         }
-
-        /* Steps */
         #order-form-container {
             padding: 1.5em;
         }
-
         #steps {
             display: flex;
-            justify-content: space-between;
             border-bottom: 1px solid var(--border-color);
             position: relative;
         }
-
-        .step {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .step i {
-            background-color: var(--secondary-bg-color);
-            width: 45px;
-            height: 45px;
-            line-height: 45px;
-            border-radius: 50%;
-            text-align: center;
-            font-size: 1.2em;
-            margin-bottom: 0.3em;
-        }
-
-        .step .active {
-            background-color: var(--secondary-color);
-        }
-
-        .step p {
-            color: var(--text-color);
-        }
-
-        .line {
-            border-bottom: 1px solid var(--border-color);
-            position: absolute;
-            top: 22.5px;
-            width: 90%;
-            left: 5%;
-            z-index: -1;
-        }
-
-        /* Form header */
+       
         #form-header p {
-            color: var(--text-color);
+            color: black;
         }
-
-        /* Form */
         #order-form-container {
             max-width: 700px;
         }
-
         #order-form-container input,
         #order-form-container select {
-            background-color: var(--bg-color);
-            border: 2px solid var(--border-color);
-            color: var(--primary-color);
+            background-color: white;
+            border: 2px solid #808080;
+            color: black;
         }
-
         #order-form-container select {
             padding: 1rem 0.75rem;
         }
-
         #order-form-container label {
-            color: var(--text-color);
+            color: black;
         }
-
         #order-form-container input:disabled,
         #order-form-container select:disabled {
-            background-color: var(--secondary-bg-color);
-            color: var(--text-color);
+            background-color: #808080;
+            color: black;
         }
-
         #order-form-container input:focus {
-            border-color: var(--secondary-color);
+            border-color: #808080;
         }
-
         #order-form-container .form-floating>label {
             left: 1em;
         }
-
-        #save-btn {
-            background-color: #25cc88;
-            border: none;
-            height: 3em;
-            width: 8em;
-            border-radius: 1.5em;
-        }
-
-        /* Responsive */
+      
         @media (min-width: 500px) {
             #save-btn {
                 width: 8em;
             }
         }
+        .finalizar {
+            background-color: #000000;
+            border: none;
+            color: white;
+            padding: 10px 50px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 15px;
+            -webkit-box-shadow: 0 10px 30px 0 rgba(128, 128, 128);
+            box-shadow: 0 10px 30px 0 rgba(128, 128, 128);
+            -webkit-border-radius: 5px 5px 5px 5px;
+            border-radius: 5px 5px 5px 5px;
+            margin: 5px 20px 40px 20px;
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            -ms-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+        .finalizar:after {
+            display: block;
+            left: 0;
+            bottom: -10px;
+            width: 0;
+            height: 2px;
+            background-color: #808080;
+            content: "";
+            color: white;
+            transition: width 0.2s;
+        }
+        .finalizar {
+            -moz-transform: scale(0.95);
+            -webkit-transform: scale(0.95);
+            -o-transform: scale(0.95);
+            -ms-transform: scale(0.95);
+            transform: scale(0.95);
+        }
+        .finalizar:hover {
+            background-color: #808080;
+            color: white;
+        }
+        .navbar-nav li.nav-item {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-nav li.nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background-color: #ffffff; /* Cor da animação */
+        transition: all 0.3s ease;
+    }
+
+    .navbar-nav li.nav-item:hover::after {
+        width: 100%;
+    }
+    .navbar-nav .nav-link.active::after,
+    .navbar-nav .nav-link[href="{{ route('dados', Auth::user()->id) }}"]::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #ffffff; 
+        transition: none; 
+    }
     </style>
 </head>
 
-<body id="checkout-page">
+<body style="min-width: 372px;">
+    <nav style="background-color: #000000;" class="navbar navbar-expand-lg navbar-dark border-bottom shadow-sm mb-3">
+        <div class="container">
+            <a class="navbar-brand" href=""><strong>Loja virtual</strong></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbar-collapse">
+                <span class="navbar-toggle-icon"></span>
+            </button>
+            <div class="align-self-end">
+                <ul class="navbar-nav">
+                    @if (auth()->check())
+                    @if (auth()->user()->permissaoID == 1)
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('index')}}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.vendas')}}">Relatorio</a>
+                    </li>
+                    @else
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.cliente')}}">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('index.carrinho') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
+                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708" />
+                            </svg>
+                        </a>
+                    </li>
+                    @endif
+                    @endif
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('sair') }}">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div id="fade" class="hide">
         <div id="loader" class="spinner-border text-info hide" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -180,25 +230,7 @@
         </div>
     </div>
     <div id="order-form-container" class="container p-6 my-md-4 px-md-0">
-        {{-- <div id="steps" class="mb-md-3 pb-md-3">
-            <div class="line"></div>
-            <div class="step">
-                <i class="bi bi-person active"></i>
-                <p class="d-none d-md-block">Endereço</p>
-            </div>
-            <div class="step">
-                <i class="bi bi-person active"></i>
-                <p class="d-none d-md-block">Pagamento</p>
-            </div>
-            <div class="step">
-                <i class="bi bi-geo-alt active"></i>
-                <p class="d-none d-md-block">Contato</p>
-            </div>
-            {{-- <div class="step">
-          <i class="bi bi-credit-card"></i>
-          <p class="d-none d-md-block">Pagamento</p>
-        </div> --}}
-
+        <div id="steps" class="mb-md-3 pb-md-3"></div>
         <div id="form-header">
             <h2>Cadastre o seu endereço</h2>
             <p>Preencha os campos para podermos enviar seus produtos</p>
@@ -283,13 +315,13 @@
                         placeholder="Cidade" disabled required data-input />
                     <label for="city">Cidade</label>
                 </div>
-
+                <div id="steps" class="mb-md-3 pb-md-3"></div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="finalizar">
+                        Finalizar
+                    </button>
+                </div>
             </div>
-    </div>
-    <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">
-            Finalizar
-        </button>
     </div>
     </form>
     </div>

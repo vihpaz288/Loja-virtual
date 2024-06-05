@@ -107,7 +107,10 @@
                     </li>
                     @else
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="">Home</a>
+                        <a class="nav-link text-white" href="{{route('index')}}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('relatorio.cliente')}}">Pedidos</a>
@@ -235,55 +238,54 @@
     </div>
 
     <div class="modal fade" id="staticBackdropEnd" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <h5 class="modal-title" id="staticBackdropLabel" style="text-align: center;">Endereço cadastrado</h5>
                 <a class="link" href="{{route('endereco')}}">Deseja cadastrar novo endereço? Clique aqui</a>
                 <div class="modal-header">
-                    <table class="table align-middle mb-0 bg-white">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>Nome</th>
-                                <th>Estado</th>
-                                <th>CEP</th>
-                                <th>Cidade</th>
-                                <th>Rua</th>
-                                <th>Numero</th>
-                                <th>Complemento</th>
-                                <th>Opções</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($enderecos as $endereco)
-                            <input type="hidden" id="_token" value="{{ csrf_token() }}">
-                            <tr>
-                                <td id="valor_nomeEnd{{$endereco->id}}">{{$endereco->nome}}</td>
-                                <td id="valor_Estado{{$endereco->id}}">{{$endereco->Estado}}</td>
-                                <td id="valor_CEP{{$endereco->id}}">{{$endereco->CEP}}</td>
-                                <td id="valor_cidade{{$endereco->id}}">{{$endereco->cidade}}</td>
-                                <td id="valor_rua{{$endereco->id}}">{{$endereco->rua}}</td>
-                                <td id="valor_numeroEnd{{$endereco->id}}">{{$endereco->numero}}</td>
-                                <td id="valor_complemento{{$endereco->id}}">{{$endereco->complemento}}</td>
-                                <td> <button type='button' id='botao_editar{{ $endereco->id }}' class="btn btn-link btn-sm btn-rounded" onclick='editar_registroEnd({{ $endereco->id }})'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                                        </svg></button>
-                                    <button type='button' id='botao_salvar{{ $endereco->id }}' class="btn btn-link btn-sm btn-rounded" onclick='salvar_registroEnd({{ $endereco->id }})' style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
-                                            <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z" />
-                                        </svg></button>
-                                    <button type="submit" class="btn btn-link btn-sm btn-rounded" onclick="deletarEndereco({{$endereco->id}})">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                                        </svg>
-                                    </button>
-                                </td>
-                                <td>
-                                </td>
+                <table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+        <tr>
+            <th>Nome</th>
+            <th>Estado</th>
+            <th>CEP</th>
+            <th>Cidade</th>
+            <th>Rua</th>
+            <th>Número</th>
+            <th>Complemento</th>
+            <th>Opções</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($enderecos as $endereco)
+        <input type="hidden" id="_token" value="{{ csrf_token() }}">
+        <tr>
+            <td id="valor_nomeEnd{{$endereco->id}}">{{$endereco->nome}}</td>
+            <td id="valor_Estado{{$endereco->id}}">{{$endereco->Estado}}</td>
+            <td id="valor_CEP{{$endereco->id}}">{{$endereco->CEP}}</td>
+            <td id="valor_cidade{{$endereco->id}}">{{$endereco->cidade}}</td>
+            <td id="valor_rua{{$endereco->id}}">{{$endereco->rua}}</td>
+            <td id="valor_numeroEnd{{$endereco->id}}">{{$endereco->numero}}</td>
+            <td id="valor_complemento{{$endereco->id}}">{{$endereco->complemento}}</td>
+            <td>
+                <button type='button' id='botao_editar{{ $endereco->id }}' class="btn btn-link btn-sm btn-rounded" style="color:#000000;" onclick='editar_registroEnd({{ $endereco->id }})'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                    </svg></button>
+                <button type='button' id='botao_salvar{{ $endereco->id }}' class="btn btn-link btn-sm btn-rounded" style="color:#000000; display:none" onclick='salvar_registroEnd({{ $endereco->id }})'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z" />
+                    </svg></button>
+                <button type="submit" class="btn btn-link btn-sm btn-rounded" style="color:#000000;" onclick="deletarEndereco({{$endereco->id}})">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                    </svg>
+                </button>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
                 </div>
                 <div class="modal-body">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>

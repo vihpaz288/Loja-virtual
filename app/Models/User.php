@@ -53,6 +53,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Endereco::class, 'userId', 'id');
     }
+    public function carrinho()
+    {
+        return $this->hasMany(Carrinho::class, 'userId', 'id');
+    
+    }
+
 
     
 }

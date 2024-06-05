@@ -66,12 +66,6 @@ class UserController extends Controller
         $search = request('search');
         return view('Index', compact('produtos'));
     }
-    // public function cartoes()
-    // {
-    //     $user = Auth::user();
-    //     $cartoes = DadosCartao::where('userId', $user->id)->get();
-    //     return view('User.dados', compact('cartoes'));
-    // }
     public function cartao()
     {
         return view('User.createCartao');
@@ -79,7 +73,7 @@ class UserController extends Controller
     public function storeCartao(Request $request)
     {
         $criar = DadosCartao::create($request->all());
-        return redirect()->route('index');
+        return redirect()->route('dados', Auth::user()->id);
     }
     public function cartaoUpdate(Request $request, $id)
     {
@@ -134,12 +128,6 @@ class UserController extends Controller
             'data' => $dados,
         ]);
     }
-    // public function enderecos()
-    // {
-    //     $user = Auth::user();
-    //     $enderecos = Endereco::where('userId', $user->id)->get();
-    //     return view('User.endereco', compact('enderecos'));
-    // }
     public function endereco()
     {
         return view('User.createEndereco');
@@ -147,7 +135,7 @@ class UserController extends Controller
     public function storeEndereco(Request $request)
     {
         Endereco::create($request->all());
-        return redirect()->route('enderecos');
+        return redirect()->route('dados', Auth::user()->id);
     }
     public function enderecoUpdate(Request $request, $id)
     {

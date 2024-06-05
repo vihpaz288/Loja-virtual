@@ -1,111 +1,3 @@
-{{-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-    <title>Relatório</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .header {
-            background-color: #04044c;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .container {
-            margin: 20px auto;
-            max-width: 800px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .filter-section {
-            margin-bottom: 20px;
-        }
-
-        .report-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .report-table th,
-        .report-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .report-table th {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="header">
-        <h1>Relatório De pedidos realizados</h1>
-    </div>
-
-    <div class="container">
-        <div class="filter-section">
-            <!-- Seção de filtro aqui, se necessário -->
-        </div>
-
-        <table class="report-table">
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Valor produto</th>
-                    <th>Valor total</th>
-                    <th>Situção</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($pedidos as $pedido)
-                    <tr>
-                        <td>{{ $pedido->created_at }}</td>
-                        <td>celular</td>
-                        <td>{{ $pedido->quantidade }}</td>
-                        <td>{{ $pedido->produtos->valor }}</td>
-                        <td>{{ $pedido->valor }}</td>
-                        @foreach ($status as $item)
-                            @if ($item->status->status == 1)
-                            <td style="background-color: green; color: white;">{{$item->status->status}}</td>
-                            @elseif($item->status->status == 2)
-                            <td style="background-color: blue; color: white;">{{$item->status->status}}</td>
-                            @else
-                            <td style="background-color: black; color: white; border-radius: 100px;">{{$item->status->status}}</td>
-                            @endif
-                        @endforeach
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</body>
-
-
-</script>
-
-</html> --}}
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -113,26 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meus Pedidos</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Arquivo CSS separado -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
         .container {
             max-width: 800px;
-            margin: 20px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
+        .nav {
+            width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         .header {
-            background-color: #007bff;
+            background-color: black;
             color: #fff;
             padding: 20px;
             text-align: center;
@@ -174,57 +66,128 @@
         .status-entregue {
             color: blue;
         }
+
+        .navbar-nav li.nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav li.nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #ffffff;
+            /* Cor da animação */
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav li.nav-item:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active::after,
+        .navbar-nav .nav-link[href="{{route('relatorio.cliente')}}"]::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ffffff;
+            /* Cor da borda branca */
+            transition: none;
+            /* Evita a animação ao selecionar */
+        }
     </style>
 </head>
 
-<body>
+<body style="min-width: 372px;">
+
+    <nav style="background-color: #000000;" class="navbar navbar-expand-lg navbar-dark border-bottom shadow-sm mb-3">
+        <div class="nav">
+            <a class="navbar-brand" href=""><strong>Loja virtual</strong></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbar-collapse">
+                <span class="navbar-toggle-icon"></span>
+            </button>
+            <div class="align-self-end">
+                <ul class="navbar-nav">
+                    @if (auth()->check())
+                    @if (auth()->user()->permissaoID == 1)
+                    <li class="navbar-brand">
+                        <a class="nav-link text-white" href="{{route('index')}}">Home</a>
+                    </li>
+                    <li class="navbar-brand">
+                        <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.vendas')}}">Relatorio</a>
+                    </li>
+                    @else
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('index')}}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{route('relatorio.cliente')}}">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('index.carrinho') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
+                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708" />
+                            </svg>
+                        </a>
+                    </li>
+                    @endif
+                    @endif
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('sair') }}">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <div class="header">
             <h1>Meus Pedidos</h1>
         </div>
         <div class="pedidos">
-            {{-- <div class="pedido">
-                <div class="pedido-info">
-                    <div>
-                        <p>Data do Pedido: 2024-05-15</p>
-                        <p>Status: <span class="status status-finalizado">Pedido Finalizado</span></p>
-                    </div>
-                    <div class="produto-info">
-                        <p>Produto: Smartphone XYZ</p>
-                        <p>Quantidade: 1</p>
-                        <p>Valor do Produto: R$ 999,99</p>
-                        <p>Valor Total: R$ 999,99</p>
-                    </div>
-                </div>
-            </div> --}}
             @foreach ($pedidos as $pedido)
-            {{-- @dd($pedido) --}}
+
             <div class="pedido">
                 <div class="pedido-info">
-                        <div>
-                            <p>Data do Pedido:{{ $pedido->created_at }}</p>
-                            @foreach ($status as $item)
-                                <p>Status:
-                                    <span
-                                        class="status
-                                @if ($item->status->status == 1) status-finalizado
-                                @elseif($item->status->status == 2) status-rota
-                                @elseif($item->status->status == 3) status-entregue @endif">
-                                        {{ $item->status->status }}
-                                    </span>
-                                </p>
-                            @endforeach
-                        </div>
-                        <div class="produto-info">
-                            <p>Quantidade: {{ $pedido->quantidade }}</p>
-                            <p>Valor do Produto: {{ $pedido->produtos[0]->nome }}</p>
-                            <p>Valor do Produto: {{ $pedido->produtos[0]->valor }}</p>
-                           {{-- <p>Valor Total: {{ $pedido->valor }}</p> --}}
-                        </div>
+                    <div>
+                        <p>Data do Pedido:{{ $pedido->created_at }}</p>
+                        <p>Status:
+                            <span class="status">
+                                {{ $pedido->status->status }}
+                            </span>
+                        </p>
                     </div>
+                    <div class="produto-info">
+                        <p>Quantidade: {{ $pedido->produtoCarrinho->quantidade }}</p>
+                        @foreach($pedido->produtoCarrinho->produtos as $produto)
+                        <p>Produto: {{ $produto->nome }}</p>
+                        <p>Valor produto: {{$produto->valor}} </p>
+                        @endforeach
+                        <p>Valor total: {{$pedido->produtoCarrinho->valor}}</p>
+                    </div>
+                </div>
             </div>
+            @endforeach
 
-                @endforeach
         </div>
     </div>
     </div>

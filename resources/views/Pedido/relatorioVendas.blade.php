@@ -70,6 +70,20 @@
         background-color: #ffffff; /* Cor da borda branca */
         transition: none; /* Evita a animação ao selecionar */
     }
+    .filter-section p {
+    font-size: 18px;
+    color: #333; /* ou outra cor adequada */
+    text-align: center; /* centralize o texto horizontalmente */
+    margin-bottom: 10px; /* adicione um espaço abaixo do texto */
+}
+.filter-section {
+    background-color: #f9f9f9; /* ou outra cor de sua preferência */
+    padding: 20px; /* ajuste conforme necessário */
+    border: 1px solid #ccc; /* ou outra cor de sua preferência */
+    border-radius: 5px; /* arredonde as bordas */
+    margin-bottom: 20px; /* ou ajuste conforme necessário */
+}
+
 
   </style>
 </head>
@@ -159,7 +173,7 @@
 
    <div class="grafico">
     <div class="filter-section">
-      <!-- Seção de filtro aqui, se necessário -->
+   <p>Produtos com maior interesse dos clientes</p>
     </div> 
 
     <canvas id="myChart" width="400" height="400"></canvas>
@@ -180,9 +194,9 @@
         type: 'doughnut',
         data: {
             labels: [
-              'Quantidade Total de vendas',
-                'Produto Mais Vendido (' + produtoMaisVendidoNome + ')',
-                'Produto Menos Vendido (' + produtoMenosVendidoNome + ')',
+              'Quantidade Total',
+                'Produto Mais com interesse (' + produtoMaisVendidoNome + ')',
+                'Produto Menos com interesse (' + produtoMenosVendidoNome + ')',
             ],
             datasets: [{
                 label: 'Dados de vendas',

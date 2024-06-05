@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/jpg" href="./img/bolsa-hobo.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -77,7 +76,7 @@
                     </li>
                     @else
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="">Home</a>
+                        <a class="nav-link text-white" href="{{route('index')}}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
@@ -140,9 +139,12 @@
                     <a href="#" class="position-absolute end-0 p-2 text-danger">
                         <i class="bi-suit-heart" style="font-size: 24px; line-height: 24px;"></i>
                     </a>
+                    @if(isset($produto->image[0]))
                     <a href="">
+                    
                         <img src="{{ asset('storage/' . $produto->image[0]->image) }}" class="card-img-top" style="width: 250px; height: 340px;">
                     </a>
+                    @endif
                     <div class="card-header">
                         R$ {{$produto->valor}}
                     </div>
@@ -188,7 +190,7 @@
                                         <form action="{{ route('carrinho.store') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="produtoId" value="{{ $produto->id }}">
-                                            <input class="btn btn-danger mt-2 d-block" type="number" id="quantity" name="quantidade" value="1" min="1" style="display: center;
+                                            <input class="btn mt-2 d-block" type="number" id="quantity" name="quantidade" value="1" min="1" style="display: center;
                                                                                 flex-direction: column;
                                                                                 align-items: center;
                                                                                 font-size: 18px;
@@ -196,7 +198,8 @@
                                                                                 width: 90px;
                                                                                 border: 1px solid #ccc;
                                                                                 border-radius: 5px;
-                                                                                padding: 5px; ">
+                                                                                padding: 5px; 
+                                                                                background-color:while">
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn" style="background-color: #000000; color:#FFFFFF;">Continuar</button>
