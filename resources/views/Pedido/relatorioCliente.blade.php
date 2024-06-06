@@ -172,17 +172,17 @@
                         <p>Data do Pedido:{{ $pedido->created_at }}</p>
                         <p>Status:
                             <span class="status">
-                                {{ $pedido->status->status }}
+                                {{$status->status}}
                             </span>
                         </p>
                     </div>
                     <div class="produto-info">
-                        <p>Quantidade: {{ $pedido->produtoCarrinho->quantidade }}</p>
-                        @foreach($pedido->produtoCarrinho->produtos as $produto)
+                        <p>Quantidade: {{ $pedido->quantidade }}</p>
+                        @foreach($pedido->produtos as $produto)
                         <p>Produto: {{ $produto->nome }}</p>
                         <p>Valor produto: {{$produto->valor}} </p>
                         @endforeach
-                        <p>Valor total: {{$pedido->produtoCarrinho->valor}}</p>
+                        <p>Valor total: {{$pedido->valor}}</p>
                     </div>
                 </div>
             </div>

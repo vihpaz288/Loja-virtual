@@ -45,7 +45,6 @@ Route::put('produto/update/{id}', [ProdutoController::class, 'update'])->name('u
 Route::get('index/carrinho', [CarrinhoController::class, 'index'])->name('index.carrinho');
 Route::post('/carrinho/store', [CarrinhoController::class, 'store'])->name('carrinho.store');
 Route::delete('carrinho/destroy/{id}', [CarrinhoController::class, 'destroy'])->name('carrinho.destroy');
-
 // Vai estar dentro de pedido (Finalizar comprar, ver quantidade total de produtos, pedidos efetuados, ver produtos mais vendidos e menos vendidos, ver quantidade de usuarios cadastrados, remover quantidade a cada compra efetuada)
 
 Route::get('finaliza', [PedidoController::class, 'finalizar'])->name('finalizar');

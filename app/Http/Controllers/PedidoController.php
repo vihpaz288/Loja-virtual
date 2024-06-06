@@ -77,17 +77,15 @@ class PedidoController extends Controller
         // ])
         // ->get();
         
-        $pedidos = Pedido::whereHas('produtoCarrinho.carrinho', function ($query) use ($userId) {
+        $pedidos = ProdutoCarrinho::with('produtos')->whereHas('carrinho', function ($query) use ($userId) {
             $query->where('userId', $userId)->where('finalizado', true);
-        })->with(['produtoCarrinho.produtos', 'status'])->get();
-        
-       
-        
-     dd($pedidos);
+        })->get();
+        $status = Pedido::with('status')->with('produtoCarrinho.carrinho')->with('produtoCarrinho.produtos')->get();
+   
         
      
         $dataAtual = date('d-m-Y H:i:s');
-        return view('Pedido.relatorioCliente', compact('pedidos', 'dataAtual'));
+        return view('Pedido.relatorioCliente', compact('pedidos', 'dataAtual', 'status'));
     }
 
     public function relatorioVendedor()

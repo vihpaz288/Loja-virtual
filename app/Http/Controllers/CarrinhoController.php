@@ -45,13 +45,12 @@ class CarrinhoController extends Controller
     }
     public function index()
     {
-
+        
         $carrinho = ProdutoCarrinho::with(['produtos', 'produtos.image'])
             ->whereHas('carrinho', function ($query) {
                 $query->where('userId', auth()->user()->id)
                     ->where('finalizado', false);
             })->get();
-        dd($carrinho);
         return view('Carrinho.index', compact('carrinho'));
     }
 
