@@ -43,15 +43,15 @@ class PedidoController extends Controller
             }
         }
 
-        $produtoCarrinhoIdCopy = $request->produtoCarrinhoId;
-        $ultimoProdutoCarrinhoId = end($produtoCarrinhoIdCopy);
-        Pedido::create([
-            'enderecoId' => $request->enderecoId,
-            'produtoCarrinhoId' => $ultimoProdutoCarrinhoId,
-            'cartaoId' => $request->cartaoId,
-            'statusId' => $request->statusId,
-        ]);
-
+        foreach ($carrinho->carrinho as $produtoCarrinho) {
+            // Criar um novo pedido para cada ProdutoCarrinho
+            Pedido::create([
+                'enderecoId' => $request->enderecoId,
+                'produtoCarrinhoId' => $produtoCarrinho->id,
+                'cartaoId' => $request->cartaoId,
+                'statusId' => $request->statusId,
+            ]);
+        }
         $update = $carrinho->update(['finalizado' => true]);
         if ($update) {
             return redirect()->route('index');
@@ -61,31 +61,27 @@ class PedidoController extends Controller
     public function relatorioCliente()
     {
         $userId = auth()->user()->id;
-
-        // $pedidos = Pedido::whereHas('produtoCarrinho.carrinho', function ($query) use ($userId) {
-        //     $query->where('userId', $userId)->where('finalizado', true); 
-        // })
-        // ->with([
-        //     'endereco', 
-        //     'status', 
-        //     'produtoCarrinho' => function ($query) {
-        //         $query->with('produtos'); 
-        //     },
-        //     'produtoCarrinho.carrinho' => function ($query) use ($userId) {
-        //         $query->where('userId', $userId)->where('finalizado', true); 
-        //     }
-        // ])
-        // ->get();
-        
-        $pedidos = ProdutoCarrinho::with('produtos')->whereHas('carrinho', function ($query) use ($userId) {
-            $query->where('userId', $userId)->where('finalizado', true);
-        })->get();
-        $status = Pedido::with('status')->with('produtoCarrinho.carrinho')->with('produtoCarrinho.produtos')->get();
+        $pedidos = Pedido::whereHas('produtoCarrinho.carrinho', function ($query) use ($userId) {
+            $query->where('userId', $userId);
+        })->with('produtoCarrinho', 'produtoCarrinho.produtos', 'status')->get();
+        $search = request('search');
+        if ($search === '0' || $search === 'todos') {
+            $pedidos = Pedido::whereHas('produtoCarrinho.carrinho', function ($query) use ($userId) {
+                $query->where('userId', $userId);
+            })->with('produtoCarrinho', 'produtoCarrinho.produtos', 'status')->get();
+        } elseif (in_array($search, ['1', '2', '3'])) {
+            $pedidos = Pedido::whereHas('produtoCarrinho.carrinho', function ($query) use ($userId) {
+                $query->where('userId', $userId);
+            })->where('statusId', $search)->with('produtoCarrinho', 'produtoCarrinho.produtos', 'status')->get();
+        } else {
+            // Se o usuário selecionar uma opção inválida, mostrar todos os pedidos
+            $pedidos = Pedido::whereHas('produtoCarrinho.carrinho', function ($query) use ($userId) {
+                $query->where('userId', $userId);
+            })->with('produtoCarrinho', 'produtoCarrinho.produtos', 'status')->get();
+        }
    
-        
-     
         $dataAtual = date('d-m-Y H:i:s');
-        return view('Pedido.relatorioCliente', compact('pedidos', 'dataAtual', 'status'));
+        return view('Pedido.relatorioCliente', compact('pedidos', 'dataAtual'));
     }
 
     public function relatorioVendedor()
@@ -95,15 +91,12 @@ class PedidoController extends Controller
         }])->get();
         $search = request('search');
         if ($search === '0' || $search === 'todos') {
-            $pedidos = Pedido::all();
-        } elseif ($search === '1') {
-            $pedidos = Pedido::where('statusId', 1)->get();
-        } elseif ($search === '2') {
-            $pedidos = Pedido::where('statusId', 2)->get();
-        } elseif ($search === '3') {
-            $pedidos = Pedido::where('statusId', 3)->get();
+            $pedidos = Pedido::with('produtoCarrinho', 'produtoCarrinho.produtos', 'status')->get();
+        } elseif (in_array($search, ['1', '2', '3'])) {
+            $pedidos = Pedido::where('statusId', $search)->with('produtoCarrinho', 'produtoCarrinho.produtos', 'status')->get();
         } else {
-            $pedidos = Pedido::all();
+           
+            $pedidos = Pedido::with('produtoCarrinho', 'produtoCarrinho.produtos', 'status')->get();
         }
         $dataAtual = date('d-m-Y H:i:s');
         return view('Pedido.relatorioVendedor', compact('pedidos', 'dataAtual'));
@@ -111,20 +104,22 @@ class PedidoController extends Controller
 
     public function relatorioVendas()
     {
-        $produtoMaisVendido = DB::table('produtocarrinho')
-            ->select('produtoId', DB::raw('SUM(quantidade) as total_vendas'))
-            ->groupBy('produtoId')
-            ->orderByDesc('total_vendas')
-            ->first();
+        $produtoMaisVendido = DB::table('pedido')
+        ->join('produtocarrinho', 'pedido.produtoCarrinhoId', '=', 'produtocarrinho.id')
+        ->select('produtocarrinho.produtoId', DB::raw('SUM(produtocarrinho.quantidade) as total_vendas'))
+        ->groupBy('produtocarrinho.produtoId')
+        ->orderByDesc('total_vendas')
+        ->first();
         $produtoIdMaisVendido = $produtoMaisVendido->produtoId;
         $totalVendasProdutoMaisVendido = $produtoMaisVendido->total_vendas;
         $produtoMaisVendidoNome = Produto::find($produtoIdMaisVendido)->nome;
 
-        $produtoMenosVendido = DB::table('produtocarrinho')
-            ->select('produtoId', DB::raw('SUM(quantidade) as total_vendas'))
-            ->groupBy('produtoId')
-            ->orderBy('total_vendas')
-            ->first();
+        $produtoMenosVendido = DB::table('pedido')
+        ->join('produtocarrinho', 'pedido.produtoCarrinhoId', '=', 'produtocarrinho.id')
+        ->select('produtocarrinho.produtoId', DB::raw('SUM(produtocarrinho.quantidade) as total_vendas'))
+        ->groupBy('produtocarrinho.produtoId')
+        ->orderBy('total_vendas')
+        ->first();
         $produtoIdMenosVendido = $produtoMenosVendido->produtoId;
         $totalVendasProdutoMenosVendido = $produtoMenosVendido->total_vendas;
         $produtoMenosVendidoNome = Produto::find($produtoIdMenosVendido)->nome;

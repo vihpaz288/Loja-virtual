@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
-      
         .header {
             background-color: #000000;
             color: #fff;
@@ -57,9 +56,11 @@
         .status-rota {
             color: orange;
         }
+
         .status-entregue {
             color: blue;
         }
+
         .styled-link {
             background-color: #000000;
             color: white;
@@ -69,49 +70,57 @@
             border: #000000;
             transition: background-color 0.3s ease;
         }
+
         .styled-link:hover {
             background-color: #808080;
         }
+
         select#status_select {
-        color: black;
-        border-radius: 10px;
-        border: 1px solid #808080;
-        padding: 5px;
-    }
-    select#status_select option {
-        border-radius: 10px;
-        color: black;
-    }
-    .navbar-nav li.nav-item {
-        position: relative;
-        transition: all 0.3s ease;
-    }
+            color: black;
+            border-radius: 10px;
+            border: 1px solid #808080;
+            padding: 5px;
+        }
 
-    .navbar-nav li.nav-item::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 0%;
-        height: 2px;
-        background-color: #ffffff; /* Cor da animação */
-        transition: all 0.3s ease;
-    }
+        select#status_select option {
+            border-radius: 10px;
+            color: black;
+        }
 
-    .navbar-nav li.nav-item:hover::after {
-        width: 100%;
-    }
-    .navbar-nav .nav-link.active::after,
-    .navbar-nav .nav-link[href="{{route('relatorio.vendedor')}}"]::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #ffffff; /* Cor da borda branca */
-        transition: none; /* Evita a animação ao selecionar */
-    }
+        .navbar-nav li.nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav li.nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #ffffff;
+            /* Cor da animação */
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav li.nav-item:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active::after,
+        .navbar-nav .nav-link[href="{{route('relatorio.vendedor')}}"]::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ffffff;
+            /* Cor da borda branca */
+            transition: none;
+            /* Evita a animação ao selecionar */
+        }
     </style>
 </head>
 
@@ -123,7 +132,7 @@
                 <span class="navbar-toggle-icon"></span>
             </button>
             <div class="align-self-end">
-            <ul class="navbar-nav">
+                <ul class="navbar-nav">
                     @if (auth()->check())
                     @if (auth()->user()->permissaoID == 1)
                     <li class="nav-item">
@@ -134,7 +143,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
-                
+
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
@@ -173,50 +182,49 @@
             <h1>Meus Pedidos</h1>
         </div>
         <form id="filterForm" method="GET" action="{{ route('relatorio.vendedor') }}">
-        <div class="input-group mb-3">
-        <label class="input-group-text" for="inputGroupSelect01">Ordenar por:</label>
-        <select class="form-select" id="select2" name="search">
-            <option disabled selected>Filtrar</option>
-            <option value="0">Todos</option>
-            <option value="1">Realizados</option>
-            <option value="2">Em rota</option>
-            <option value="3">Finalizados</option>
-        </select>
-    </div>
-</form>
-<div class="pedidos" id="statusTable">
-    @foreach($pedidos as $pedido)
-    <div class="pedido">
-        <div class="pedido-info">
-            <div>
-                <p>Data do Pedido: {{ $pedido->created_at }}</p>
-                <p>Status: <span class="status">{{ $pedido->status->status }}</span></p>
-                <p>Valor total: {{ $pedido->produtoCarrinho->valor * $pedido->produtoCarrinho->quantidade }}</p>
-                <button type="button" class="styled-link" onclick="abrirModalCreate('{{ $pedido->id }}')">Detalhes do pedido</button>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">Ordenar por:</label>
+                <select class="form-select" id="select2" name="search">
+                    <option disabled selected>Filtrar</option>
+                    <option value="0">Todos</option>
+                    <option value="1">Realizados</option>
+                    <option value="2">Em rota</option>
+                    <option value="3">Finalizados</option>
+                </select>
             </div>
-            <div class="produto-info">
-                <p>Quantidade: {{ $pedido->produtoCarrinho->quantidade }}</p>
-                <p>Nome do Produto: {{ $pedido->produtoCarrinho->produtos[0]->nome }}</p>
-                <p>Valor do Produto: {{ $pedido->produtoCarrinho->valor }}</p>
+        </form>
+        <div class="pedidos" id="statusTable">
+            @foreach($pedidos as $pedido)
+            <div class="pedido">
+                <div class="pedido-info">
+                    <div>
+                        <p>Data do Pedido: {{ $pedido->created_at }}</p>
+                        <p>Status: <span class="status">{{$pedido->status->status}}</span></p>
+                        <p>Valor total: {{ $pedido->produtoCarrinho->valor * $pedido->produtoCarrinho->quantidade }}</p>
+                        <button type="button" class="styled-link" onclick="abrirModalCreate('{{ $pedido->id }}')">Detalhes do pedido</button>
+                    </div>
+                    <div class="produto-info">
+                        <p>Quantidade: {{ $pedido->produtoCarrinho->quantidade }}</p>
+                        <p>Nome do Produto: {{ $pedido->produtoCarrinho->produtos[0]->nome }}</p>
+                        <p>Valor do Produto: {{ $pedido->produtoCarrinho->valor }}</p>
+                    </div>
+                </div>
             </div>
+            @endforeach
         </div>
-    </div>
-    @endforeach
-</div>
     </div>
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Dados da entrega</h5>
-    </div>
+                </div>
                 <div class="pedido">
                     <div class="pedido-info">
                         <div>
                             <input type="hidden" id="_token" value="{{ csrf_token() }}">
-                            <p>Status:
-                                <span class="status" id='valor_status'>
-                                </span>
+                            <span class="status" id="valor_status">
+                            </span>
                             </p>
                             <button type='button' id='botao_editar' class="styled-link" onclick='editar_registro()'>Atualizar</button>
                             <button type='button' id='botao_salvar' class="styled-link" style="display: none;" onclick='salvar_registro()'>Salvar</button>
@@ -224,17 +232,17 @@
                         <div class="produto-info">
                             <input type="hidden" id="id_pedido">
                             <p>Estado: <span id="valor_Estado"></span></p>
-                            <p>CEP:  <span id="valor_CEP"></span></p>
-                            <p>Cidade:  <span id="valor_cidade"></span></p>
-                            <p>Rua:  <span id="valor_rua"></span></p>
-                            <p>Numero:  <span id="valor_numero"></span></p>
+                            <p>CEP: <span id="valor_CEP"></span></p>
+                            <p>Cidade: <span id="valor_cidade"></span></p>
+                            <p>Rua: <span id="valor_rua"></span></p>
+                            <p>Numero: <span id="valor_numero"></span></p>
                             <p>Complemento: <span id="valor_complemento"></span></p>
                         </div>
                     </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -253,25 +261,26 @@
     });
 </script>
 <script>
-  const abrirModalCreate = (id_pedido) => {
-    $('#exampleModalCenter').modal('show');
-    $.ajax({
-        url: `/relatorio/dados/${id_pedido}`, // Ajustado para id_pedido
-        type: 'GET',
-        success: function(response) {
-            // console.log(response);
-            $('#id_pedido').val(response.pedido.id);
-            $('#valor_status').html(response.status.status);
-            $('#valor_CEP').html(response.endereco.CEP);
-            $('#valor_cidade').html(response.endereco.cidade);
-            $('#valor_rua').html(response.endereco.rua); // Ajustado para response.endereco.estado
-            $('#valor_numero').html(response.endereco.numero);
-            $('#valor_complemento').html(response.endereco.complemento);
-        }
-    });
-}
+    const abrirModalCreate = (id_pedido) => {
+        $('#exampleModalCenter').modal('show');
+        $.ajax({
+            url: `/relatorio/dados/${id_pedido}`, // Ajustado para id_pedido
+            type: 'GET',
+            success: function(response) {
+                // console.log(response);
+                $('#id_pedido').val(response.pedido.id);
+                $('#valor_status').html(response.status.status);
+                $('#valor_CEP').html(response.endereco.CEP);
+                $('#valor_cidade').html(response.endereco.cidade);
+                $('#valor_rua').html(response.endereco.rua); // Ajustado para response.endereco.estado
+                $('#valor_numero').html(response.endereco.numero);
+                $('#valor_complemento').html(response.endereco.complemento);
+            }
+        });
+    }
+
     function editar_registro() {
-        const id =  $('#id_pedido').val();
+        const id = $('#id_pedido').val();
         $(`#botao_salvar`).show();
         $(`#botao_editar`).hide();
         var status = document.getElementById("valor_status");
@@ -290,7 +299,7 @@
             }
         ];
         var select = document.createElement("select");
-select.setAttribute("id", "status_select");
+        select.setAttribute("id", "status_select");
         options.forEach(function(option) {
             var optionElement = document.createElement("option");
             optionElement.setAttribute("value", option.id);
@@ -303,15 +312,16 @@ select.setAttribute("id", "status_select");
         status.innerHTML = "";
         status.appendChild(select);
     }
+
     function salvar_registro() {
-        const id =  $('#id_pedido').val();
-        const statusId = $(`#status_select${id}`).val(); 
-        const _token = $('#_token').val(); 
+        const id = $('#id_pedido').val();
+        const statusId = $('#status_select').val(); // Corrigido para pegar o valor do select
+        const _token = $('#_token').val();
         $.ajax({
             type: "put",
             url: `/pedido/status/${id}`,
             data: {
-                statusId: statusId, 
+                statusId: statusId,
                 _token: _token,
             },
             success: function(response) {
@@ -321,7 +331,6 @@ select.setAttribute("id", "status_select");
                     message: response.msg,
                 });
 
-                // Recarrega a página após 1 segundo (1000 milissegundos)
                 setTimeout(function() {
                     location.reload();
                 }, 1000);
@@ -330,4 +339,5 @@ select.setAttribute("id", "status_select");
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 </html>

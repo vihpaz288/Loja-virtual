@@ -173,7 +173,7 @@
 
    <div class="grafico">
     <div class="filter-section">
-   <p>Produtos com maior interesse dos clientes</p>
+   <p>Relatório de quantidade de produtos vendidos</p>
     </div> 
 
     <canvas id="myChart" width="400" height="400"></canvas>
