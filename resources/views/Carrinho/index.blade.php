@@ -100,9 +100,6 @@
                 </button>
                 <div class="align-self-end">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="">{{ Auth::user()->name }}</a>
-                        </li>
                         @if (auth()->check())
                         @if (auth()->user()->permissaoID == 1)
                         <li class="nav-item">
@@ -148,10 +145,10 @@
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-10">
 
+                        @if (!isset($carrinho))
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Seu carrinho</h3>
                         </div>
-                        @if (isset($carrinho))
                         <?php $total = 0 ?>
                         @foreach ($carrinho as $item1)
 
@@ -216,7 +213,11 @@
                             </div>
                         </div>
                         @else
-                        <p>Você não possui itens no carrinho</p>
+                        <div style="background-color: #f2f2f2; border: 1px solid #ccc; border-radius: 5px; padding: 20px; text-align: center; font-family: Arial, sans-serif; color: #333;">
+    <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Seu carrinho está vazio</p>
+    <p style="font-size: 16px; margin-top: 0;">Continue navegando em nossa loja para descobrir produtos incríveis!</p>
+</div>
+
                         @endif
                     </div>
                 </div>

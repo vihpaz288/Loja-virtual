@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('userId')->constrained('users');
             $table->string('nome');
-            $table->integer('numero');
-            $table->date('vencimento');
+            $table->string('numero');
+            $table->string('vencimento');
             $table->integer('cvv');
             $table->timestamps();
         });

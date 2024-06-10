@@ -60,6 +60,7 @@ class PedidoController extends Controller
 
     public function relatorioCliente()
     {
+        $pedido = Pedido::all();
         $userId = auth()->user()->id;
         $pedidos = Pedido::whereHas('produtoCarrinho.carrinho', function ($query) use ($userId) {
             $query->where('userId', $userId);
@@ -79,13 +80,14 @@ class PedidoController extends Controller
                 $query->where('userId', $userId);
             })->with('produtoCarrinho', 'produtoCarrinho.produtos', 'status')->get();
         }
-   
+
         $dataAtual = date('d-m-Y H:i:s');
         return view('Pedido.relatorioCliente', compact('pedidos', 'dataAtual'));
     }
 
     public function relatorioVendedor()
     {
+        $pedido = Pedido::all();
         $pedidos = Pedido::with(['endereco', 'status', 'produtoCarrinho' => function ($query) {
             $query->with('produtos');
         }])->get();
@@ -95,39 +97,53 @@ class PedidoController extends Controller
         } elseif (in_array($search, ['1', '2', '3'])) {
             $pedidos = Pedido::where('statusId', $search)->with('produtoCarrinho', 'produtoCarrinho.produtos', 'status')->get();
         } else {
-           
+
             $pedidos = Pedido::with('produtoCarrinho', 'produtoCarrinho.produtos', 'status')->get();
         }
         $dataAtual = date('d-m-Y H:i:s');
-        return view('Pedido.relatorioVendedor', compact('pedidos', 'dataAtual'));
+        return view('Pedido.relatorioVendedor', compact('pedido', 'pedidos', 'dataAtual'));
     }
 
     public function relatorioVendas()
     {
+        $pedidos = Pedido::all();
         $produtoMaisVendido = DB::table('pedido')
-        ->join('produtocarrinho', 'pedido.produtoCarrinhoId', '=', 'produtocarrinho.id')
-        ->select('produtocarrinho.produtoId', DB::raw('SUM(produtocarrinho.quantidade) as total_vendas'))
-        ->groupBy('produtocarrinho.produtoId')
-        ->orderByDesc('total_vendas')
-        ->first();
-        $produtoIdMaisVendido = $produtoMaisVendido->produtoId;
-        $totalVendasProdutoMaisVendido = $produtoMaisVendido->total_vendas;
-        $produtoMaisVendidoNome = Produto::find($produtoIdMaisVendido)->nome;
+            ->join('produtocarrinho', 'pedido.produtoCarrinhoId', '=', 'produtocarrinho.id')
+            ->select('produtocarrinho.produtoId', DB::raw('SUM(produtocarrinho.quantidade) as total_vendas'))
+            ->groupBy('produtocarrinho.produtoId')
+            ->orderByDesc('total_vendas')
+            ->first();
+
+        if ($produtoMaisVendido) {
+            $produtoIdMaisVendido = $produtoMaisVendido->produtoId;
+            $totalVendasProdutoMaisVendido = $produtoMaisVendido->total_vendas;
+            $produtoMaisVendidoNome = Produto::find($produtoIdMaisVendido)->nome;
+        } else {
+            $produtoMaisVendidoNome = "Nenhum pedido realizado ainda";
+            $totalVendasProdutoMaisVendido = 0;
+        }
 
         $produtoMenosVendido = DB::table('pedido')
-        ->join('produtocarrinho', 'pedido.produtoCarrinhoId', '=', 'produtocarrinho.id')
-        ->select('produtocarrinho.produtoId', DB::raw('SUM(produtocarrinho.quantidade) as total_vendas'))
-        ->groupBy('produtocarrinho.produtoId')
-        ->orderBy('total_vendas')
-        ->first();
-        $produtoIdMenosVendido = $produtoMenosVendido->produtoId;
-        $totalVendasProdutoMenosVendido = $produtoMenosVendido->total_vendas;
-        $produtoMenosVendidoNome = Produto::find($produtoIdMenosVendido)->nome;
+            ->join('produtocarrinho', 'pedido.produtoCarrinhoId', '=', 'produtocarrinho.id')
+            ->select('produtocarrinho.produtoId', DB::raw('SUM(produtocarrinho.quantidade) as total_vendas'))
+            ->groupBy('produtocarrinho.produtoId')
+            ->orderBy('total_vendas')
+            ->first();
+
+        if ($produtoMenosVendido) {
+            $produtoIdMenosVendido = $produtoMenosVendido->produtoId;
+            $totalVendasProdutoMenosVendido = $produtoMenosVendido->total_vendas;
+            $produtoMenosVendidoNome = Produto::find($produtoIdMenosVendido)->nome;
+        } else {
+            $produtoMenosVendidoNome = "Nenhum pedido realizado ainda";
+            $totalVendasProdutoMenosVendido = 0;
+        }
+
 
         $quantidadeTotalProdutos = DB::table('produtocarrinho')
             ->sum('quantidade');
-            
-        return view('Pedido.relatorioVendas', compact('produtoMaisVendidoNome', 'totalVendasProdutoMaisVendido', 'produtoMenosVendidoNome', 'totalVendasProdutoMenosVendido', 'quantidadeTotalProdutos'));
+
+        return view('Pedido.relatorioVendas', compact('pedidos', 'produtoMaisVendidoNome', 'totalVendasProdutoMaisVendido', 'produtoMenosVendidoNome', 'totalVendasProdutoMenosVendido', 'quantidadeTotalProdutos'));
     }
 
     public function relatorioDados($id)

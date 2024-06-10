@@ -22,7 +22,6 @@
         background-color: #808080;
         content: "";
         transition: width 0.2s;
-
     }
 
     a.underlineHover:hover {
@@ -45,7 +44,7 @@
         left: 0;
         width: 0%;
         height: 2px;
-        background-color: #ffffff; /* Cor da animação */
+        background-color: #ffffff; 
         transition: all 0.3s ease;
     }
 
@@ -60,20 +59,19 @@
         left: 0;
         width: 100%;
         height: 2px;
-        background-color: #ffffff; /* Cor da borda branca */
-        transition: none; /* Evita a animação ao selecionar */
+        background-color: #ffffff; 
+        transition: none; 
     }
   
-
 .link {
-        color: black; /* Cor do link (azul) */
-        text-decoration: none; /* Remove o sublinhado padrão */
-        font-weight: bold; /* Define a espessura da fonte como negrito */
-        transition: color 0.3s ease; /* Adiciona uma transição suave na cor */
+        color: black; 
+        text-decoration: none; 
+        font-weight: bold; 
+        transition: color 0.3s ease; 
     }
 
     .link:hover {
-        color: #808080; /* Cor do link ao passar o mouse (tom mais escuro de azul) */
+        color: #808080; 
     }
 
 </style>
@@ -242,6 +240,7 @@
             <div class="modal-content">
                 <h5 class="modal-title" id="staticBackdropLabel" style="text-align: center;">Endereço cadastrado</h5>
                 <a class="link" href="{{route('endereco')}}">Deseja cadastrar novo endereço? Clique aqui</a>
+                
                 <div class="modal-header">
                 <table class="table align-middle mb-0 bg-white">
     <thead class="bg-light">
@@ -293,7 +292,6 @@
             </div>
         </div>
     </div>
-
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
 </script>
@@ -330,9 +328,8 @@
         document.getElementById("valor_email" + id).innerHTML = email;
         document.getElementById("valor_telefone" + id).innerHTML = telefone;
         document.getElementById("valor_dataNascimento" + id).innerHTML = dataNascimento;
-
         document.getElementById("valor_password" + id).innerHTML = password;
-        console.log(name);
+      
         $.ajax({
             type: "put",
             url: `/dado/update/${id}`,
@@ -362,7 +359,7 @@
             type: "delete",
             url: `/cartao/delete/${id_cartao}`,
             data: {
-                _token: '{{ csrf_token() }}' // Certifique-se de que está definido corretamente
+                _token: '{{ csrf_token() }}' 
             },
             success: function(response) {
                 $(`.tr-cartao-${id_cartao}`).remove();

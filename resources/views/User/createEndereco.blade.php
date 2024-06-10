@@ -318,7 +318,7 @@
                 <div id="steps" class="mb-md-3 pb-md-3"></div>
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="finalizar">
-                        Finalizar
+                        Cadastrar
                     </button>
                 </div>
             </div>

@@ -1,94 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatório geral de vendas</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório geral de vendas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <style>
+    <style>
+        .grafico {
+            width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            /* Adicione outras propriedades CSS conforme necessário */
+        }
 
-.grafico {
-    width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-    /* Adicione outras propriedades CSS conforme necessário */
-}
-    .container {
-      max-width: 800px;
-      }
+        .container {
+            max-width: 800px;
+        }
 
-    .filter-section {
-      margin-bottom: 20px;
-    }
+        .filter-section {
+            margin-bottom: 20px;
+        }
 
-    .report-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    .report-table th,
-    .report-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
+        .report-table th,
+        .report-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
 
-    .report-table th {
-      background-color: #f2f2f2;
-    }
-    ul{
-      float: right;
-    }
-    .navbar-nav li.nav-item {
-        position: relative;
-        transition: all 0.3s ease;
-    }
+        .report-table th {
+            background-color: #f2f2f2;
+        }
 
-    .navbar-nav li.nav-item::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 0%;
-        height: 2px;
-        background-color: #ffffff; /* Cor da animação */
-        transition: all 0.3s ease;
-    }
+        ul {
+            float: right;
+        }
 
-    .navbar-nav li.nav-item:hover::after {
-        width: 100%;
-    }
-    .navbar-nav .nav-link.active::after,
-    .navbar-nav .nav-link[href="{{route('relatorio.vendas')}}"]::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #ffffff; /* Cor da borda branca */
-        transition: none; /* Evita a animação ao selecionar */
-    }
-    .filter-section p {
-    font-size: 18px;
-    color: #333; /* ou outra cor adequada */
-    text-align: center; /* centralize o texto horizontalmente */
-    margin-bottom: 10px; /* adicione um espaço abaixo do texto */
-}
-.filter-section {
-    background-color: #f9f9f9; /* ou outra cor de sua preferência */
-    padding: 20px; /* ajuste conforme necessário */
-    border: 1px solid #ccc; /* ou outra cor de sua preferência */
-    border-radius: 5px; /* arredonde as bordas */
-    margin-bottom: 20px; /* ou ajuste conforme necessário */
-}
+        .navbar-nav li.nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
 
+        .navbar-nav li.nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #ffffff;
+            /* Cor da animação */
+            transition: all 0.3s ease;
+        }
 
-  </style>
+        .navbar-nav li.nav-item:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active::after,
+        .navbar-nav .nav-link[href="{{route('relatorio.vendas')}}"]::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ffffff;
+            /* Cor da borda branca */
+            transition: none;
+            /* Evita a animação ao selecionar */
+        }
+
+        .filter-section p {
+            font-size: 18px;
+            color: #333;
+            /* ou outra cor adequada */
+            text-align: center;
+            /* centralize o texto horizontalmente */
+            margin-bottom: 10px;
+            /* adicione um espaço abaixo do texto */
+        }
+
+        .filter-section {
+            background-color: #f9f9f9;
+            /* ou outra cor de sua preferência */
+            padding: 20px;
+            /* ajuste conforme necessário */
+            border: 1px solid #ccc;
+            /* ou outra cor de sua preferência */
+            border-radius: 5px;
+            /* arredonde as bordas */
+            margin-bottom: 20px;
+            /* ou ajuste conforme necessário */
+        }
+    </style>
 </head>
+
 <body>
-<nav style="background-color: #000000;" class="navbar navbar-expand-lg navbar-dark border-bottom shadow-sm mb-3">
+    <nav style="background-color: #000000;" class="navbar navbar-expand-lg navbar-dark border-bottom shadow-sm mb-3">
         <div class="container">
             <a class="navbar-brand" href=""><strong>Loja virtual</strong></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbar-collapse">
@@ -106,7 +122,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
-                
+
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
@@ -171,53 +187,61 @@
             </div>
     </header>
 
-   <div class="grafico">
-    <div class="filter-section">
-   <p>Relatório de quantidade de produtos vendidos</p>
-    </div> 
 
-    <canvas id="myChart" width="400" height="400"></canvas>
-    <canvas id="myChart2" width="400" height="400"></canvas>
+    @if(!isset($pedidos))
+    <div class="grafico">
+        <div class="filter-section">
+            <p>Relatório de quantidade de produtos vendidos</p>
+        </div>
 
-  </div>
+        <canvas id="myChart" width="400" height="400"></canvas>
+        <canvas id="myChart2" width="400" height="400"></canvas>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    var produtoMaisVendidoNome = "{{ $produtoMaisVendidoNome }}";
-    var totalVendasProdutoMaisVendido = "{{ $totalVendasProdutoMaisVendido }}";
-    var produtoMenosVendidoNome = "{{ $produtoMenosVendidoNome }}";
-    var totalVendasProdutoMenosVendido = "{{ $totalVendasProdutoMenosVendido }}";
-    var quantidadeTotalProdutos = "{{ $quantidadeTotalProdutos }}";
+    </div>
 
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [
-              'Quantidade Total',
-                'Produto Mais com interesse (' + produtoMaisVendidoNome + ')',
-                'Produto Menos com interesse (' + produtoMenosVendidoNome + ')',
-            ],
-            datasets: [{
-                label: 'Dados de vendas',
-                data: [quantidadeTotalProdutos, totalVendasProdutoMaisVendido, totalVendasProdutoMenosVendido],
-                backgroundColor: [
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 205, 86, 0.2)'
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var produtoMaisVendidoNome = "{{ $produtoMaisVendidoNome }}";
+        var totalVendasProdutoMaisVendido = "{{ $totalVendasProdutoMaisVendido }}";
+        var produtoMenosVendidoNome = "{{ $produtoMenosVendidoNome }}";
+        var totalVendasProdutoMenosVendido = "{{ $totalVendasProdutoMenosVendido }}";
+        var quantidadeTotalProdutos = "{{ $quantidadeTotalProdutos }}";
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Quantidade Total',
+                    'Produto Mais com interesse (' + produtoMaisVendidoNome + ')',
+                    'Produto Menos com interesse (' + produtoMenosVendidoNome + ')',
                 ],
-                borderColor: [
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 205, 86, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {}
-    });
-</script>
-
+                datasets: [{
+                    label: 'Dados de vendas',
+                    data: [quantidadeTotalProdutos, totalVendasProdutoMaisVendido, totalVendasProdutoMenosVendido],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 205, 86, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 205, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {}
+        });
+    </script>
+    @else
+    <div style="background-color: #f2f2f2; border: 1px solid #ccc; border-radius: 5px; padding: 20px; text-align: center; font-family: Arial, sans-serif; color: #333;">
+        <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Não há pedidos feitos ainda</p>
+        <p style="font-size: 16px; margin-top: 0;">Ainda não foram realizados pedidos na sua loja. Continue oferecendo ótimos produtos e serviços!</p>
+    </div>
+    @endif
 
 </body>
+
 </html>

@@ -307,7 +307,7 @@
         }
 
         .navbar-nav .nav-link.active::after,
-        .navbar-nav .nav-link[href="{{route('relatorio.vendedor')}}"]::after {
+        .navbar-nav .nav-link[href="{{route('relatorio.cliente')}}"]::after {
             content: '';
             position: absolute;
             bottom: -1px;
@@ -376,6 +376,7 @@
         </div>
     </nav>
     <div class="container">
+        @if(!isset($pedidos))
         <div class="header">
             <h1>Meus Pedidos</h1>
         </div>
@@ -477,13 +478,15 @@
                 $('#valor_complemento').html(response.endereco.complemento);
             }
         });
-    }
-
     
-
-   
-
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+@else
+<div style="background-color: #f2f2f2; border: 1px solid #ccc; border-radius: 5px; padding: 20px; text-align: center; font-family: Arial, sans-serif; color: #333;">
+    <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Você não fez nenhum pedido ainda</p>
+    <p style="font-size: 16px; margin-top: 0;">Explore nossa loja e descubra produtos incríveis! Quando estiver pronto para fazer um pedido, estaremos aqui para ajudar.</p>
+</div>
 
+@endif
 </html>

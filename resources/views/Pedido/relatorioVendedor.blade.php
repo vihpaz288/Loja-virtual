@@ -178,6 +178,7 @@
         </div>
     </nav>
     <div class="container">
+        @if(!isset($pedido))
         <div class="header">
             <h1>Meus Pedidos</h1>
         </div>
@@ -339,5 +340,10 @@
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+@else
+<div style="background-color: #f2f2f2; border: 1px solid #ccc; border-radius: 5px; padding: 20px; text-align: center; font-family: Arial, sans-serif; color: #333;">
+    <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Não há pedidos feitos ainda</p>
+    <p style="font-size: 16px; margin-top: 0;">Ainda não foram realizados pedidos na sua loja. Continue oferecendo ótimos produtos e serviços!</p>
+</div>
+@endif
 </html>
