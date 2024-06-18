@@ -8,8 +8,6 @@
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
 </head>
 <style>
   html {
@@ -37,10 +35,6 @@
     margin: 40px 8px 10px 8px;
     color: #cccccc;
   }
-
-
-
-  /* STRUCTURE */
 
   .wrapper {
     display: flex;
@@ -75,10 +69,6 @@
     border-radius: 0 0 10px 10px;
   }
 
-
-
-  /* TABS */
-
   h2.inactive {
     color: #cccccc;
   }
@@ -87,10 +77,6 @@
     color: #0d0d0d;
     border-bottom: 2px solid #5fbae9;
   }
-
-
-
-  /* FORM TYPOGRAPHY*/
 
   input[type=button],
   input[type=submit],
@@ -166,17 +152,6 @@
     color: #cccccc;
   }
 
-
-
-  /* ANIMATIONS */
-
-  /* Simple CSS3 Fade-in-down Animation */
-
-
-  /* Simple CSS3 Fade-in Animation */
-
-
-  /* Simple CSS3 Fade-in Animation */
   .underlineHover:after {
     display: block;
     left: 0;
@@ -196,10 +171,6 @@
     width: 100%;
   }
 
-
-
-  /* OTHERS */
-
   *:focus {
     outline: none;
   }
@@ -209,72 +180,83 @@
   }
 
   #error-message {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #e4605e;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  #error-message li {
+    list-style: none;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  #success-message {
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background-color: #e4605e;
-        /* Cor de fundo vermelha */
+        background-color: #65c368;
         color: #fff;
-        /* Cor do texto branco */
-        padding: 10px 20px;
-        /* Espaçamento interno */
+        padding: 10px 10px;
         border-radius: 20px;
-        /* Borda arredondada */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        /* Sombra */
     }
 
-    #error-message li {
+    #success-message li {
         list-style: none;
-        /* Remover marcadores de lista */
         font-weight: bold;
-        /* Texto em negrito */
         font-size: 16px;
-        /* Tamanho da fonte */
         margin-bottom: 5px;
-        /* Espaçamento entre os itens */
     }
-    .hide {
-        display: none;
-    }
+  .hide {
+    display: none;
+  }
 </style>
-<!------ Include the above in your HEAD tag ---------->
-<div class="wrapper fadeInDown">
-@if ($errors->any())
-        <div id="error-message">
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </div>
-        @endif
-  <div id="formContent">
 
+<div class="wrapper fadeInDown">
+  @if ($errors->any())
+  <div id="error-message">
+    @foreach ($errors->all() as $error)
+    <li>{{ $error }}</li>
+    @endforeach
+  </div>
+  @endif
+
+  @if(session('success'))
+    <div id="success-message">
+        <p>{{session('success')}}</p>
+    </div>
+  @endif
+
+  <div id="formContent">
     <form action="{{route('logar')}}" method="POST">
       @csrf
       <input type="email" id="login" class="fadeIn second" name="email" placeholder="Email">
       <input type="password" id="password" class="fadeIn third" name="password" placeholder="Senha">
       <input type="submit" class="fadeIn fourth" value="Entrar">
     </form>
-
-    <!-- Remind Passowrd -->
     <div id="formFooter">
       <a class="underlineHover" href="{{route('create.user')}}">Ainda não tem conta? clique aqui</a>
     </div>
-
   </div>
 </div>
+
 </body>
+
 <script>
-  // Esconder a mensagem de sucesso após 5 segundos
   $(document).ready(function() {
     setTimeout(function() {
       $('.success-message').fadeOut('slow');
-    }, 5000); // 5000 milissegundos = 5 segundos
+    }, 5000);
   });
- 
   setTimeout(function() {
-        document.getElementById('error-message').classList.add('hide');
-    }, 5000); // 5000 milissegundos = 5 segundos
+    document.getElementById('error-message').classList.add('hide');
+  }, 5000);
 </script>
 
 </html>

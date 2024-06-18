@@ -33,7 +33,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'dataNascimento' => 'required|date|before_or_equal:'.now()->subYears(18)->format('d-m-y'),
-            'telefone' => 'required|string|max:100|min:12',
+            'telefone' => 'required|string|max:15|min:12',
             'password' => 'required|string|min:4',
         ], [
             'name.required' => 'O campo nome é obrigatório.',
@@ -49,7 +49,7 @@ class UserController extends Controller
             'dataNascimento.before_or_equal' => 'Desculpe, apenas maiores de 18 anos podem se cadastrar.',
             'telefone.required' => 'O campo telefone é obrigatório.',
             'telefone.string' => 'O campo telefone deve ser uma string.',
-            'telefone.max' => 'O campo telefone não pode ter mais de 12 caracteres.',
+            'telefone.max' => 'O campo telefone não pode ter mais de 15 caracteres.',
             'telefone.min' => 'O campo telefone não pode ter menos de 12 caracteres.',
             'password.required' => 'O campo senha é obrigatório.',
             'password.string' => 'O campo senha deve ser uma string.',
@@ -74,7 +74,7 @@ class UserController extends Controller
     {
         $request->validate([
             'email' => 'required|string|email|exists:users,email',
-            'password' => 'required|string|min:4',
+            'password' => 'required|string|min:4|max:10',
         ], [
             'email.required' => 'O campo email é obrigatório.',
             'email.string' => 'O campo email deve ser uma string.',
@@ -83,6 +83,7 @@ class UserController extends Controller
             'password.required' => 'O campo senha é obrigatório.',
             'password.string' => 'O campo senha deve ser uma string.',
             'password.min' => 'A senha deve ter no mínimo 4 caracteres.',
+            'password.max' => 'A senha deve ter no maximo 10 caracteres.',
         ]);
         
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -111,6 +112,21 @@ class UserController extends Controller
     }
     public function storeCartao(Request $request)
     {
+        $request->validate([
+            'nome' => 'required',
+            'numero' => 'required',
+            'vencimento' => 'required|date_format:m/y|after_or_equal:today',
+            'cvv' => 'required|digits:3',
+        ], [
+            'nome.required' => 'O campo nome é obrigatório.',
+            'numero.required' => 'O campo número é obrigatório.',
+            'vencimento.required' => 'O campo vencimento é obrigatório.',
+            'vencimento.date_format' => 'O campo vencimento deve estar no formato MM/AA.',
+            'vencimento.after_or_equal' => 'A data de vencimento deve ser posterior ou igual à data atual.',
+            'cvv.required' => 'O campo CVV é obrigatório.',
+            'cvv.digits' => 'O CVV deve ter 3 dígitos.',
+        ]);
+        
         $criar = DadosCartao::create($request->all());
         return redirect()->route('dados', Auth::user()->id);
     }
@@ -155,8 +171,6 @@ class UserController extends Controller
     }
     public function updateDados(Request $request, $id)
     {
-      
-    
         $dados = User::findOrFail($id);
         $dados->name = $request->input('name');
         $dados->email = $request->input('email');

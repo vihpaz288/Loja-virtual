@@ -2,34 +2,108 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cadastrar produto</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar cartão</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <style>
-        .form-upload {
-            background: #333;
-            display: block;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-            width: 350px;
+        :root {
+            --bg-color: #04044c;
+            --secondary-bg-color: #494a7d;
+            --primary-color: #fff;
+            --secondary-color: #25cc88;
+            --text-color: #8789af;
+            --border-color: #20235b;
         }
 
-        .input-personalizado {
-            cursor: pointer;
+        #checkout-page {
+            color: black;
         }
 
-        .input-file {
-            display: none;
+        #fade .spinner-border {
+            width: 60px;
+            height: 60px;
         }
 
-        .btn {
+        .hide {
+            display: none !important;
+        }
+
+        #message {
+            width: 40%;
+        }
+
+        .alert.alert-light p {
+            border-bottom: 1px solid #333;
+            padding: 1.2em 0;
+        }
+
+        #order-form-container {
+            padding: 1.5em;
+        }
+
+        #steps {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        #form-header p {
+            color: black;
+        }
+
+        #order-form-container {
+            max-width: 700px;
+        }
+
+        #order-form-container input,
+        #order-form-container select,
+        #order-form-container textarea {
+            background-color: white;
+            border: 2px solid #808080;
+            color: black;
+        }
+
+        #order-form-container select {
+            padding: 1rem 0.75rem;
+        }
+
+        #order-form-container label {
+            color: black;
+        }
+
+        #order-form-container input:disabled,
+        #order-form-container select:disabled {
+            background-color: #808080;
+            color: black;
+        }
+
+        #order-form-container input:focus {
+            border-color: #808080;
+        }
+
+        #order-form-container .form-floating>label {
+            left: 1em;
+        }
+
+        @media (min-width: 500px) {
+            #save-btn {
+                width: 8em;
+            }
+        }
+
+        .finalizar {
             background-color: #000000;
             border: none;
             color: white;
-            padding: 15px 80px;
+            padding: 10px 50px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
@@ -47,7 +121,7 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .btn:after {
+        .finalizar:after {
             display: block;
             left: 0;
             bottom: -10px;
@@ -55,10 +129,11 @@
             height: 2px;
             background-color: #808080;
             content: "";
+            color: white;
             transition: width 0.2s;
         }
 
-        .btn {
+        .finalizar {
             -moz-transform: scale(0.95);
             -webkit-transform: scale(0.95);
             -o-transform: scale(0.95);
@@ -66,8 +141,9 @@
             transform: scale(0.95);
         }
 
-        .btn:hover {
+        .finalizar:hover {
             background-color: #808080;
+            color: white;
         }
 
         .navbar-nav li.nav-item {
@@ -92,7 +168,7 @@
         }
 
         .navbar-nav .nav-link.active::after,
-        .navbar-nav .nav-link[href="{{route('create.produto')}}"]::after {
+        .navbar-nav .nav-link[href="{{ route('create.produto') }}"]::after {
             content: '';
             position: absolute;
             bottom: -1px;
@@ -100,9 +176,7 @@
             width: 100%;
             height: 2px;
             background-color: #ffffff;
-            /* Cor da borda branca */
             transition: none;
-            /* Evita a animação ao selecionar */
         }
     </style>
 </head>
@@ -126,7 +200,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
-                
+
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
@@ -160,68 +234,83 @@
             </div>
         </div>
     </nav>
-    <main class="flex-fill border border-top-0 p-5">
-        <div class="container">
-            {{-- <hr class="mt-3"> --}}
 
-            <div class="row mt-5">
-
-                <div class="col">
-                    <form action="{{ route('store.produto') }}" method="POST" class="row g-3" enctype="multipart/form-data">
-                        @csrf
-                        <div class="col-12">
-                            <label for="inputAddress" class="form-label">Nome</label>
-                            <input type="text" name="nome" class="form-control" id="inputAddress" placeholder="Digite aqui o nome do produto">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="inputCity" class="form-label">Valor</label>
-                            <input type="input" name="valor" id="valor" class="form-control input-valor" placeholder="Valor produto R$:" onkeyup="formatarMoeda(this)">
-                        </div>
-
-                        <div class="col-md-2">
-                            <label for="inputZip" class="form-label">Quantidade</label>
-                            <input type="number" name="quantidade" class="form-control" id="inputZip" placeholder="Quantidade de produto em estoque">
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="formFile" class="form-label2">Foto 1
-                                    <div class="input-group">
-                                        <input class="input-group-text form-control" name="file1[]" type="file" accept="image/*" id="formFile1" multiple>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="exampleFormControlTextarea1" class="form-label">Descrição</label>
-                            <textarea class="form-control" name="descrição" id="exampleFormControlTextarea1" rows="3" placeholder="Digite aqui detalhes do produto"></textarea>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn mt-3 d-block">Cadastrar</button>
-                        </div>
-                    </form>
-
-                    <script>
-                        function formatarMoeda(input) {
-                            // Remove todos os caracteres não numéricos
-                            var valorNumerico = input.value.replace(/\D/g, "");
-
-                            // Transforma em número com duas casas decimais
-                            var valorFloat = parseFloat(valorNumerico / 100).toFixed(2);
-
-                            // Atualiza o valor do campo com o formato correto
-                            input.value = valorFloat;
-                        }
-                    </script>
-
+    <div id="fade" class="hide">
+        <div id="loader" class="spinner-border text-info hide" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div id="message" class="hide">
+            <div class="alert alert-light" role="alert">
+                <h4>Mensagem:</h4>
+                <p></p>
+                <button id="close-message" type="button" class="btn btn-secondary">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="order-form-container" class="container p-6 my-md-4 px-md-0">
+        <div id="steps" class="mb-md-3 pb-md-3"></div>
+        <div id="form-header">
+            <h2>Cadastre o seus produtos</h2>
+            <p>Preencha os campos para podermos enviar seus produtos</p>
+        </div>
+        <form action="{{ route('store.produto') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
+            <div class="row mb-3">
+                <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
+                    <input type="text" class="form-control shadow-none" id="nome" name="nome" placeholder="nome" required data-input />
+                    <label for="nome">Nome</label>
                 </div>
-    </main>
+                <div class="col-12 col-sm-6 form-floating">
+                    <input type="text" class="form-control shadow-none" name="valor" id="valor" placeholder="Valor produto R$:" onkeyup="formatarMoeda(this)" required data-input maxlength="16" />
+                    <label for="valor">Valor</label>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
+                    <input class="input-group-text form-control" name="file1[]" type="file" accept="image/*" id="formFile1" multiple> 
+                    <label for="vencimento">Foto</label>
+                </div>
+                <div class="col-12 col-sm-6 form-floating">
+                    <input type="number" class="form-control shadow-none" id="quantidade" name="quantidade" placeholder="quantidade" required data-input />
+                    <label for="quantidade">Quantidade</label>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12 col-sm-6 form-floating">
+                    <textarea class="form-control shadow-none" name="descrição" id="" cols="30" rows="10" required data-input></textarea>
+                    <!-- <textarea type="text" class="form-control shadow-none" id="cvv" name="descrição" placeholder="CVV" required data-input /textarea> -->
+                    <label for="descrição">Descrição</label>
+                </div>
 
+            </div>
+            <div class="row mb-3">
+
+                <div id="steps" class="mb-md-3 pb-md-3"></div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="finalizar">
+                        Cadastrar
+                    </button>
+                </div>
+            </div>
+    </div>
+    </form>
     </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-</script>
-</script>
 
-</html>
+<script>
+    function formatarMoeda(input) {
+        // Remove todos os caracteres não numéricos
+        var valorNumerico = input.value.replace(/\D/g, "");
+
+        // Transforma em número com duas casas decimais
+        var valorFloat = parseFloat(valorNumerico / 100).toFixed(2);
+
+        // Atualiza o valor do campo com o formato correto
+        input.value = valorFloat;
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    < /html>

@@ -145,7 +145,7 @@
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-10">
 
-                        @if (!isset($carrinho))
+                        @if (isset($carrinho))
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Seu carrinho</h3>
                         </div>

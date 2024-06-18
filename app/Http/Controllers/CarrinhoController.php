@@ -12,37 +12,61 @@ class CarrinhoController extends Controller
 {
     public function store(Request $request)
     {
-
-        $verificaCarrinho = Carrinho::with('carrinho')->where('userId', auth()->user()->id)->where('finalizado', false)->first();
-
-        if (!isset($verificaCarrinho)) {
-            $verificaCarrinho = Carrinho::create([
+        // Encontrar o carrinho ativo do usuário ou criar um novo se não existir
+        $carrinho = Carrinho::with('carrinho')->where('userId', auth()->user()->id)
+                        ->where('finalizado', false)->first();
+    
+        if (!$carrinho) {
+            $carrinho = Carrinho::create([
                 'userId' => auth()->user()->id,
                 'finalizado' => false,
             ]);
         }
-
+    
+        // Encontrar o produto pelo ID fornecido na requisição
         $produto = Produto::find($request->produtoId);
-
-        $verificaExistenciaDoProduto = $verificaCarrinho->carrinho->where('produtoId', '=', $produto->id)->first();
-        if (isset($verificaExistenciaDoProduto)) {
-            $quantidade = $verificaExistenciaDoProduto->quantidade + $request->quantidade;
-            $valor =  $quantidade * $produto->valor;
-            $verificaExistenciaDoProduto->update([
-                'quantidade' => $quantidade,
-                'valor' => $valor,
+    
+        if (!$produto) {
+            return redirect()->back()->with('error', 'Produto não encontrado.');
+        }
+    
+        // Verificar se a quantidade solicitada está disponível em estoque
+        if ($request->quantidade > $produto->quantidade) {
+            return redirect()->back()->with('error', 'Quantidade solicitada maior do que a disponível em estoque.');
+        }
+    
+        // Verificar se o produto já existe no carrinho do usuário
+        $itemCarrinho = $carrinho->carrinho()->where('produtoId', $produto->id)->first();
+    
+        if ($itemCarrinho) {
+            // Se já existe, atualizar a quantidade e o valor
+            $novaQuantidade = $itemCarrinho->quantidade + $request->quantidade;
+            $novoValor = $novaQuantidade * $produto->valor;
+    
+            // Verificar se a nova quantidade não ultrapassa o estoque
+            if ($novaQuantidade > $produto->quantidade) {
+                return redirect()->back()->with('error', 'Quantidade solicitada maior do que a disponível em estoque.');
+            }
+    
+            $itemCarrinho->update([
+                'quantidade' => $novaQuantidade,
+                'valor' => $novoValor,
             ]);
         } else {
+            // Se não existe, criar um novo item de carrinho
             $valorTotal = $request->quantidade * $produto->valor;
-            $request->merge([
-                'carrinhoId' => $verificaCarrinho->id,
+    
+            ProdutoCarrinho::create([
+                'carrinhoId' => $carrinho->id,
+                'produtoId' => $produto->id,
+                'quantidade' => $request->quantidade,
                 'valor' => $valorTotal,
             ]);
-            $produtoCarrinho = ProdutoCarrinho::create($request->all());
         }
-
-        return redirect()->route('index');
+    
+        return redirect()->route('index')->with('success', 'Produto adicionado ao carrinho com sucesso.');
     }
+    
     public function index()
     {
         

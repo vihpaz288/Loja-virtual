@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -14,6 +14,7 @@
     .btn:hover {
         background-color: #808080;
     }
+
     .navbar-nav li.nav-item {
         position: relative;
         transition: all 0.3s ease;
@@ -26,13 +27,14 @@
         left: 0;
         width: 0%;
         height: 2px;
-        background-color: #ffffff; /* Cor da animação */
+        background-color: #ffffff;
         transition: all 0.3s ease;
     }
 
     .navbar-nav li.nav-item:hover::after {
         width: 100%;
     }
+
     .navbar-nav .nav-link.active::after,
     .navbar-nav .nav-link[href="{{route('index')}}"]::after {
         content: '';
@@ -41,13 +43,64 @@
         left: 0;
         width: 100%;
         height: 2px;
-        background-color: #ffffff; /* Cor da borda branca */
-        transition: none; /* Evita a animação ao selecionar */
+        background-color: #ffffff;
+        transition: none;
     }
 
+    #error-message {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #e4605e;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #error-message li {
+        list-style: none;
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    #success-message {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #65c368;
+        color: #fff;
+        padding: 10px 10px;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #success-message li {
+        list-style: none;
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .hide {
+        display: none;
+    }
 </style>
 
 <body style="min-width: 372px;">
+    @if(session('error'))
+    <div id="error-message">
+        <p>{{session('error')}}</p>
+    </div>
+    @endif
+
+    @if(session('success'))
+    <div id="success-message">
+        <p>{{session('success')}}</p>
+    </div>
+    @endif
+    
     <nav style="background-color: #000000;" class="navbar navbar-expand-lg navbar-dark border-bottom shadow-sm mb-3">
         <div class="container">
             <a class="navbar-brand" href=""><strong>Loja virtual</strong></a>
@@ -66,7 +119,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
-                
+
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
@@ -133,7 +186,6 @@
     <div class="container">
         <div class="row g-3 pt-4">
             @foreach ($produtos as $produto)
-
             <div class="col-md-4">
                 <div class="card text-center bg-light">
                     <a href="#" class="position-absolute end-0 p-2 text-danger">
@@ -141,7 +193,6 @@
                     </a>
                     @if(isset($produto->image[0]))
                     <a href="">
-                    
                         <img src="{{ asset('storage/' . $produto->image[0]->image) }}" class="card-img-top" style="width: 250px; height: 340px;">
                     </a>
                     @endif
@@ -174,10 +225,8 @@
                             Adicionar ao Carrinho
                         </button>
                         @endif
-
                         @endif
                         @endif
-                        <!-- Modal -->
                         <div class="modal fade" id="staticBackdrop-{{ $produto->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -209,16 +258,13 @@
                                 </div>
                             </div>
                         </div>
-
                         <small class="text-success"> {{$produto->quantidade}} Em estoque</small>
                     </div>
                 </div>
             </div>
-
             @endforeach
         </div>
-
-        <footer class="border-top text-muted bg-ligth">
+        <footer class="border-top text-muted bg-ligth fixed-bottom" style="">
             <div class="container">
                 <div class="row py-3">
                     <div class="col-12 cold-md-4 text-center text-md-left">
@@ -229,6 +275,14 @@
         </footer>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+        <script>
+            setTimeout(function() {
+                document.getElementById('error-message').classList.add('hide');
+            }, 5000);
+            setTimeout(function() {
+                document.getElementById('success-message').classList.add('hide');
+            }, 5000);
+        </script>
 </body>
 
 </html>

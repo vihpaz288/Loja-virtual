@@ -177,10 +177,39 @@
             background-color: #ffffff;
             transition: none;
         }
+        #error-message {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #e4605e;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #error-message li {
+        list-style: none;
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
     </style>
 </head>
 
 <body style="min-width: 372px;">
+@if(session('error'))
+    <div id="error-message">
+        <p>{{session('error')}}</p>
+    </div>
+    @endif
+
+    @if(session('success'))
+    <div id="success-message">
+        <p>{{session('success')}}</p>
+    </div>
+    @endif
     <nav style="background-color: #000000;" class="navbar navbar-expand-lg navbar-dark border-bottom shadow-sm mb-3">
         <div class="container">
             <a class="navbar-brand" href=""><strong>Loja virtual</strong></a>
