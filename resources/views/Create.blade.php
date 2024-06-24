@@ -40,10 +40,6 @@
         color: #cccccc;
     }
 
-
-
-    /* STRUCTURE */
-
     .wrapper {
         display: flex;
         align-items: center;
@@ -77,10 +73,6 @@
         border-radius: 0 0 10px 10px;
     }
 
-
-
-    /* TABS */
-
     h2.inactive {
         color: #cccccc;
     }
@@ -89,10 +81,6 @@
         color: #0d0d0d;
         border-bottom: 2px solid #5fbae9;
     }
-
-
-
-    /* FORM TYPOGRAPHY*/
 
     input[type=button],
     input[type=submit],
@@ -174,14 +162,6 @@
         color: #cccccc;
     }
 
-
-
-    /* ANIMATIONS */
-
-    /* Simple CSS3 Fade-in-down Animation */
-
-
-    /* Simple CSS3 Fade-in Animation */
     .underlineHover:after {
         display: block;
         left: 0;
@@ -201,10 +181,6 @@
         width: 100%;
     }
 
-
-
-    /* OTHERS */
-
     *:focus {
         outline: none;
     }
@@ -222,38 +198,22 @@
         bottom: 20px;
         right: 20px;
         background-color: #e4605e;
-        /* Cor de fundo vermelha */
         color: #fff;
-        /* Cor do texto branco */
         padding: 10px 20px;
-        /* Espaçamento interno */
         border-radius: 20px;
-        /* Borda arredondada */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        /* Sombra */
     }
 
     #error-message li {
         list-style: none;
-        /* Remover marcadores de lista */
         font-weight: bold;
-        /* Texto em negrito */
         font-size: 16px;
-        /* Tamanho da fonte */
         margin-bottom: 5px;
-        /* Espaçamento entre os itens */
     }
 </style>
-<!------ Include the above in your HEAD tag ---------->
 
 <div class="wrapper fadeInDown">
     <div id="formContent">
-        <!-- Tabs Titles -->
-
-        <!-- Icon -->
-        <!-- <div class="fadeIn first">
-     <p id="icon">Lega</p>  
-    </div> -->
         @if ($errors->any())
         <div id="error-message">
             @foreach ($errors->all() as $error)
@@ -262,22 +222,41 @@
         </div>
         @endif
 
-        <!-- Login Form -->
         <form action="{{ route('store.user') }}" method="POST">
             @csrf
             <input type="hidden" name="permissaoID" value="2">
-            <input type="text" id="login" class="fadeIn second" name="name" placeholder="Nome">
-            <input type="email" id="password" class="fadeIn third" name="email" placeholder="Email">
-            <input type="date" id="login" class="fadeIn second" name="dataNascimento" placeholder="Data de nascimento">
-            <input type="tel" id="password" class="fadeIn third" name="telefone" placeholder="Telefone" onkeyup="handlePhone(event)">
+
+            <input type="text" id="name" class="fadeIn second" name="name" placeholder="Nome" value="{{ old('name') }}">
+            @error('name')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+
+            <input type="email" id="email" class="fadeIn third" name="email" placeholder="Email" value="{{ old('email') }}">
+            @error('email')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+
+            <input type="date" id="dataNascimento" class="fadeIn second" name="dataNascimento" placeholder="Data de nascimento" value="{{ old('dataNascimento') }}">
+            @error('dataNascimento')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+
+            <input type="tel" id="telefone" class="fadeIn third" name="telefone" placeholder="Telefone" value="{{ old('telefone') }}" onkeyup="handlePhone(event)">
+            @error('telefone')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+
             <input type="password" id="password" class="fadeIn third" name="password" placeholder="Senha">
+            @error('password')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+
             <input type="submit" class="fadeIn fourth" value="Cadastrar">
+
             <div id="formFooter">
-                <a class="underlineHover" href="{{route('login')}}">Já possui conta? clique aqui</a>
+                <a class="underlineHover" href="{{ route('login') }}">Já possui conta? clique aqui</a>
             </div>
         </form>
-
-        <!-- Remind Passowrd -->
 
     </div>
 </div>
@@ -299,10 +278,9 @@
 <script>
     setTimeout(function() {
         document.getElementById('error-message').classList.add('hide');
-    }, 5000); // 5000 milissegundos = 5 segundos
+    }, 5000); 
 </script>
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
-{!! Toastr::message() !!}
 
 </html>

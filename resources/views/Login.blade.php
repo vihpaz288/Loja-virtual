@@ -196,23 +196,25 @@
     font-size: 16px;
     margin-bottom: 5px;
   }
-  #success-message {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #65c368;
-        color: #fff;
-        padding: 10px 10px;
-        border-radius: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
 
-    #success-message li {
-        list-style: none;
-        font-weight: bold;
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
+  #success-message {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #65c368;
+    color: #fff;
+    padding: 10px 10px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  #success-message li {
+    list-style: none;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
   .hide {
     display: none;
   }
@@ -228,18 +230,26 @@
   @endif
 
   @if(session('success'))
-    <div id="success-message">
-        <p>{{session('success')}}</p>
-    </div>
+  <div id="success-message">
+    <p>{{session('success')}}</p>
+  </div>
   @endif
 
   <div id="formContent">
+    
     <form action="{{route('logar')}}" method="POST">
       @csrf
-      <input type="email" id="login" class="fadeIn second" name="email" placeholder="Email">
-      <input type="password" id="password" class="fadeIn third" name="password" placeholder="Senha">
+      <input type="email" id="login" class="fadeIn second" name="email" placeholder="Email" value="{{ old('email') }}">
+      @error('email')
+      <div class="text-danger">{{ $message }}</div>
+      @enderror
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password" value="{{ old('password') }}">
+      @error('password')
+      <div class="text-danger">{{ $message }}</div>
+      @enderror
       <input type="submit" class="fadeIn fourth" value="Entrar">
     </form>
+
     <div id="formFooter">
       <a class="underlineHover" href="{{route('create.user')}}">Ainda não tem conta? clique aqui</a>
     </div>

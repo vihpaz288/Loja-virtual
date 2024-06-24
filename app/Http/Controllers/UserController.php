@@ -30,19 +30,21 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'dataNascimento' => 'required|date|before_or_equal:'.now()->subYears(18)->format('d-m-y'),
-            'telefone' => 'required|string|max:15|min:12',
-            'password' => 'required|string|min:4',
+            'name' => 'required|string|min:3|max:30',
+            'email' => 'required|string|email|max:50|min:13|unique:users',
+            'dataNascimento' => 'required|date|before_or_equal:' . now()->subYears(18)->format('Y-m-d'),
+            'telefone' => 'required|string|max:15|min:8',
+            'password' => 'required|string|min:4|max:20',
         ], [
             'name.required' => 'O campo nome é obrigatório.',
             'name.string' => 'O campo nome deve ser uma string.',
-            'name.max' => 'O campo nome não pode ter mais de 255 caracteres.',
+            'name.min' => 'O campo nome não pode ter menos de 3 caracteres.',
+            'name.max' => 'O campo nome não pode ter mais de 30 caracteres.',
             'email.required' => 'O campo email é obrigatório.',
             'email.string' => 'O campo email deve ser uma string.',
             'email.email' => 'O campo email deve ser um endereço de email válido.',
-            'email.max' => 'O campo email não pode ter mais de 255 caracteres.',
+            'email.max' => 'O campo email não pode ter mais de 50 caracteres.',
+            'email.min' => 'O campo email não pode ter menos de 13 caracteres.',
             'email.unique' => 'Este email já está em uso. Por favor, escolha outro.',
             'dataNascimento.required' => 'O campo data de nascimento é obrigatório.',
             'dataNascimento.date' => 'O campo data de nascimento deve ser uma data válida.',
@@ -54,6 +56,7 @@ class UserController extends Controller
             'password.required' => 'O campo senha é obrigatório.',
             'password.string' => 'O campo senha deve ser uma string.',
             'password.min' => 'A senha deve ter no mínimo 4 caracteres.',
+            'password.max' => 'A senha deve ter no maximo 20 caracteres.',
         ]);
         
         $senha = Hash::make($request->password);
@@ -65,7 +68,7 @@ class UserController extends Controller
             'dataNascimento' => $request->dataNascimento,
             'password' => $senha,
         ]);
-        return redirect()->route('login')->with('success', 'Parabéns! Seu cadastro foi realizado com sucesso. Agora você pode fazer login na sua conta.');    }
+        return redirect()->route('login')->with('success', 'Parabéns! Seu cadastro foi realizado com sucesso. Agora você pode fazer login na sua conta.')->withInput();    }
     public function login()
     {
         return view('Login');
@@ -74,7 +77,7 @@ class UserController extends Controller
     {
         $request->validate([
             'email' => 'required|string|email|exists:users,email',
-            'password' => 'required|string|min:4|max:10',
+            'password' => 'required|string|min:4|max:20',
         ], [
             'email.required' => 'O campo email é obrigatório.',
             'email.string' => 'O campo email deve ser uma string.',
@@ -83,13 +86,18 @@ class UserController extends Controller
             'password.required' => 'O campo senha é obrigatório.',
             'password.string' => 'O campo senha deve ser uma string.',
             'password.min' => 'A senha deve ter no mínimo 4 caracteres.',
-            'password.max' => 'A senha deve ter no maximo 10 caracteres.',
+            'password.max' => 'A senha deve ter no máximo 20 caracteres.',
         ]);
         
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->route('index');
+        $credentials = $request->only('email', 'password');
+    
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('index')->withInput();
+        } else {
+            return redirect()->back()->withErrors(['password' => 'A senha fornecida está incorreta.'])->withInput();
         }
     }
+    
     public function sair()
     {
         Auth::logout();
