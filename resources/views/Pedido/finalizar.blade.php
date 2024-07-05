@@ -96,9 +96,9 @@
         }
         #order-form-container input,
         #order-form-container select {
-            background-color: black;
-            border: 2px solid black;
-            color: var(--primary-color);
+            background-color: white;
+            border: 2px solid #808080;
+            color:black;
         }
         #order-form-container select {
             padding: 1rem 0.75rem;
@@ -112,7 +112,7 @@
             color: var(--text-color);
         }
         #order-form-container input:focus {
-            border-color: var(--secondary-color);
+            border-color: black;
         }
         #order-form-container .form-floating>label {
             left: 1em;
@@ -172,6 +172,7 @@
             background-color: #808080;
             color: white;
         }
+     
     </style>
 </head>
 <body id="checkout-page">
@@ -230,7 +231,7 @@
                     @foreach ($cartaos as $cartao)
                         <div class="form-check opcaoCartao" style="display: none">
                             <input class="form-check-input" type="radio" name="cartaoId"
-                                id="cartao-{{ $cartao->id }}" value="{{ $cartao->id }}">
+                                id="cartao-{{ $cartao->id }}" value="{{ $cartao->id }}" checked>
                             <label class="form-check-label" for="cartao-{{ $cartao->id }}">
                                 {{ $cartao->nome }}
                             </label>

@@ -24,39 +24,60 @@ class produtoController extends Controller
     }
     public function store(Request $request)
     {
-       
 
 
-            // if ($request->file("file1")) {
-            //     $path1 = $request->file("file1")->store('produto', 'public');
-            //     $request['foto1'] = $path1;
-            // }
-            // dd($request->except('file1', '_token'));
+        $request->validate([
+            'nome' => 'required|string|min:3|max:30',
+            'descrição' => 'required|string|min:20|max:500',
+            'quantidade' => 'required|integer|min:1|max:1000',
+            'valor' => 'required|numeric|min:0.01|max:10000',
+            'file1' => 'required',
 
-           
-            $criar = Produto::create($request->except('file1', '_token'));
-            if (!$criar) {
-               
+        ], [
+            'nome.required' => 'O campo nome é obrigatório.',
+            'nome.string' => 'O campo nome deve ser uma string.',
+            'nome.min' => 'O campo nome não pode ter menos de 3 caracteres.',
+            'nome.max' => 'O campo nome não pode ter mais de 30 caracteres.',
+
+            'descrição.required' => 'O campo descrição é obrigatório.',
+            'descrição.string' => 'O campo descrição deve ser uma string.',
+            'descrição.min' => 'O campo descrição não pode ter menos de 20 caracteres.',
+            'descrição.max' => 'O campo descrição não pode ter mais de 500 caracteres.',
+
+            'quantidade.required' => 'O campo quantidade é obrigatório.',
+            'quantidade.integer' => 'O campo quantidade deve ser um número.',
+            'quantidade.min' => 'O campo quantidade não pode ser menor de 1 caracteres.',
+            'quantidade.max' => 'O campo quantidade não pode ser mais de 10000 caracteres.',
+
+            'valor.required' => 'O campo valor não é obrigatório.',
+            'valor.numeric' => 'O campo valor deve ser um número.',
+            'valor.min' => 'O campo valor não pode ter menos de 0.01 caracteres.',
+            'valor.max' => 'O campo descrição não pode ter mais de 10000 caracteres.',
+
+            'file1.required' => 'Campo arquivo é obrigatório.',
+        ]);
+
+
+        $criar = Produto::create($request->except('file1', '_token'));
+        if (!$criar) {
+
+            return redirect()->back()->with('falha', 'Não foi possivel criar o produto');
+        }
+
+        foreach ($request->file1 as $key => $value) {
+            $caminhoDaImagem = $value->store('produto', 'public');
+            $criarProduto = ImageProduto::create([
+                'produtoId'    => $criar->id,
+                'image'        => $caminhoDaImagem
+            ]);
+            if (!$criarProduto) {
+
                 return redirect()->back()->with('falha', 'Não foi possivel criar o produto');
             }
+        }
 
-            foreach ($request->file1 as $key => $value) {
-                $caminhoDaImagem = $value->store('produto', 'public');
-                $criarProduto = ImageProduto::create([
-                    'produtoId'    => $criar->id,
-                    'image'        => $caminhoDaImagem
-                ]);
-                if (!$criarProduto) {
-                  
-                    return redirect()->back()->with('falha', 'Não foi possivel criar o produto');
-                }
-            }
 
-          
-            return redirect()->route('index')->with('success', 'Produto cadastrado com sucesso.');
-      
-        
-        
+        return redirect()->route('index')->with('success', 'Produto cadastrado com sucesso.');
     }
     public function detalhes($id)
     {
@@ -128,39 +149,39 @@ class produtoController extends Controller
     //         DB::rollBack();
     //         return redirect()->back();
     //     }
-        //    Produto::findOrFail($request->id)->update($request->all());
+    //    Produto::findOrFail($request->id)->update($request->all());
 
-        //    return redirect()->route('index');
+    //    return redirect()->route('index');
 
-        // $produto = Produto::findOrFail($request->id);
-        // dd($request->all());
-        // // Verifica se foi enviada uma nova foto
-        // if ($request->hasFile('nova_foto')) {
-        //     // Armazena a nova foto e obtém o caminho do arquivo
-        //     $caminho_foto1 = $request->file('nova_foto1')->store('produto', 'public');
-        //     $caminho_foto2 = $request->file('nova_foto2')->store('produto', 'public');
-        //     $caminho_foto3 = $request->file('nova_foto3')->store('produto', 'public');
+    // $produto = Produto::findOrFail($request->id);
+    // dd($request->all());
+    // // Verifica se foi enviada uma nova foto
+    // if ($request->hasFile('nova_foto')) {
+    //     // Armazena a nova foto e obtém o caminho do arquivo
+    //     $caminho_foto1 = $request->file('nova_foto1')->store('produto', 'public');
+    //     $caminho_foto2 = $request->file('nova_foto2')->store('produto', 'public');
+    //     $caminho_foto3 = $request->file('nova_foto3')->store('produto', 'public');
 
-        //     // Atualiza o caminho da foto no produto
-        //     $produto->foto1 = $caminho_foto1;
-        //     $produto->foto2 = $caminho_foto2;
-        //     $produto->foto3 = $caminho_foto3;
+    //     // Atualiza o caminho da foto no produto
+    //     $produto->foto1 = $caminho_foto1;
+    //     $produto->foto2 = $caminho_foto2;
+    //     $produto->foto3 = $caminho_foto3;
 
-        // }
+    // }
 
-        // // Atualiza os outros campos do produto
-        // $produto->nome = $request->nome;
-        // $produto->valor = $request->valor;
-        // $produto->quantidade = $request->quantidade;
-        // $produto->descrição = $request->descrição;
+    // // Atualiza os outros campos do produto
+    // $produto->nome = $request->nome;
+    // $produto->valor = $request->valor;
+    // $produto->quantidade = $request->quantidade;
+    // $produto->descrição = $request->descrição;
 
-        // // Adicione outros campos conforme necessário
+    // // Adicione outros campos conforme necessário
 
-        // // Salva as alterações no banco de dados
-        // $produto->save();
+    // // Salva as alterações no banco de dados
+    // $produto->save();
 
-        // return redirect()->route('index');
-        // }
+    // return redirect()->route('index');
+    // }
 
 
     //         $produto = Produto::findOrFail($request->id);
@@ -195,5 +216,4 @@ class produtoController extends Controller
     //         return redirect()->route('index')->with('success', 'Produto atualizado com sucesso.');
 
     //     }
- }
-
+}

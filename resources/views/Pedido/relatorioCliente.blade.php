@@ -341,7 +341,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('create.produto')}}">Produtos</a>
-
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('relatorio.vendedor')}}">Pedidos</a>
@@ -351,7 +350,7 @@
                     </li>
                     @else
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="">Home</a>
+                        <a class="nav-link text-white" href="{{route('index')}}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('dados', Auth::user()->id) }}">Dados</a>
@@ -376,7 +375,7 @@
         </div>
     </nav>
     <div class="container">
-        @if(!isset($pedidos))
+        @if(isset($pedidos))
         <div class="header">
             <h1>Meus Pedidos</h1>
         </div>
@@ -393,31 +392,31 @@
             </div>
         </form>
         <div class="pedidos" id="statusTable">
-           
+
             @foreach ($pedidos as $pedido)
 
-<div class="pedido">
-    <div class="pedido-info">
-        <div>
-            <p>Data do Pedido:{{ $pedido->created_at }}</p>
-            <p>Status:
-                <span class="status">
-                   {{$pedido->status->status}}
-                </span>
-                <p>Valor total: {{$pedido->produtoCarrinho->valor}}</p>
-                <button type="button" class="styled-link" onclick="abrirModalCreate('{{ $pedido->id }}')">Detalhes do pedido</button>
-            </p>
-        </div>
-        <div class="produto-info">
-            <p>Quantidade: {{ $pedido->produtoCarrinho->quantidade }}</p>
-            @foreach($pedido->produtoCarrinho->produtos as $produto)
-            <p>Produto: {{ $produto->nome }}</p>
-            <p>Valor produto: {{$produto->valor}} </p>
+            <div class="pedido">
+                <div class="pedido-info">
+                    <div>
+                        <p>Data do Pedido:{{ $pedido->created_at }}</p>
+                        <p>Status:
+                            <span class="status">
+                                {{$pedido->status->status}}
+                            </span>
+                        <p>Valor total: {{$pedido->produtoCarrinho->valor}}</p>
+                        <button type="button" class="styled-link" onclick="abrirModalCreate('{{ $pedido->id }}')">Detalhes do pedido</button>
+                        </p>
+                    </div>
+                    <div class="produto-info">
+                        <p>Quantidade: {{ $pedido->produtoCarrinho->quantidade }}</p>
+                        @foreach($pedido->produtoCarrinho->produtos as $produto)
+                        <p>Produto: {{ $produto->nome }}</p>
+                        <p>Valor produto: {{$produto->valor}} </p>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
             @endforeach
-        </div>
-    </div>
-</div>
-@endforeach
         </div>
     </div>
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -428,7 +427,7 @@
                 </div>
                 <div class="pedido">
                     <div class="pedido-info">
-                      
+
                         <div class="produto-info">
                             <input type="hidden" id="id_pedido">
                             <p>Estado: <span id="valor_Estado"></span></p>
@@ -461,16 +460,17 @@
     });
 </script>
 <script>
-    const abrirModalCreate = (id_pedido) => {
+  const abrirModalCreate = (id_pedido) => {
         $('#exampleModalCenter').modal('show');
         $.ajax({
             url: `/relatorio/dados/${id_pedido}`, // Ajustado para id_pedido
             type: 'GET',
             success: function(response) {
-                // console.log(response);
+                console.log(response);
                 $('#id_pedido').val(response.pedido.id);
-                $('#valor_Estado').html(response.Estado.Estado);
                 $('#valor_status').html(response.status.status);
+                $('#valor_Estado').html(response.endereco.Estado);
+               
                 $('#valor_CEP').html(response.endereco.CEP);
                 $('#valor_cidade').html(response.endereco.cidade);
                 $('#valor_rua').html(response.endereco.rua); // Ajustado para response.endereco.estado
@@ -478,8 +478,8 @@
                 $('#valor_complemento').html(response.endereco.complemento);
             }
         });
-    
     }
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @else
@@ -489,4 +489,5 @@
 </div>
 
 @endif
+
 </html>

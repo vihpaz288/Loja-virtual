@@ -188,7 +188,7 @@
     </header>
 
 
-    @if(!isset($pedidos))
+    @if(isset($pedidos))
     <div class="grafico">
         <div class="filter-section">
             <p>Relatório de quantidade de produtos vendidos</p>
@@ -213,8 +213,8 @@
             data: {
                 labels: [
                     'Quantidade Total',
-                    'Produto Mais com interesse (' + produtoMaisVendidoNome + ')',
-                    'Produto Menos com interesse (' + produtoMenosVendidoNome + ')',
+                    'Produto com mais interesse (' + produtoMaisVendidoNome + ')',
+                    'Produto com menos interesse (' + produtoMenosVendidoNome + ')',
                 ],
                 datasets: [{
                     label: 'Dados de vendas',

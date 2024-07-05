@@ -5,11 +5,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Criar cartão</title>
+    <title>Cadastro de produto - Loja eletro</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
-    <!-- Bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
@@ -159,7 +157,6 @@
             width: 0%;
             height: 2px;
             background-color: #ffffff;
-            /* Cor da animação */
             transition: all 0.3s ease;
         }
 
@@ -178,8 +175,49 @@
             background-color: #ffffff;
             transition: none;
         }
+
+        #error-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #e4605e;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #error-message li {
+            list-style: none;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        #success-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #65c368;
+            color: #fff;
+            padding: 10px 10px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #success-message li {
+            list-style: none;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .hide {
+            display: none;
+        }
     </style>
 </head>
+
 
 <body style="min-width: 372px;">
     <nav style="background-color: #000000;" class="navbar navbar-expand-lg navbar-dark border-bottom shadow-sm mb-3">
@@ -260,29 +298,43 @@
             <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
             <div class="row mb-3">
                 <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                    <input type="text" class="form-control shadow-none" id="nome" name="nome" placeholder="nome" required data-input />
+                    <input type="text" class="form-control shadow-none" id="nome" name="nome" placeholder="nome" value="{{ old('nome') }}" required data-input />
                     <label for="nome">Nome</label>
+                    @error('nome')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-12 col-sm-6 form-floating">
-                    <input type="text" class="form-control shadow-none" name="valor" id="valor" placeholder="Valor produto R$:" onkeyup="formatarMoeda(this)" required data-input maxlength="16" />
+                    <input type="text" class="form-control shadow-none" name="valor" id="valor" value="{{ old('valor') }}" placeholder="Valor produto R$:" onkeyup="formatarMoeda(this)" required data-input maxlength="16" />
                     <label for="valor">Valor</label>
+                    @error('valor')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                    <input class="input-group-text form-control" name="file1[]" type="file" accept="image/*" id="formFile1" multiple> 
-                    <label for="vencimento">Foto</label>
+                    <input class="input-group-text form-control" name="file1[]" type="file" value="{{ old('file1[]') }}" accept="image/*" id="formFile1" required multiple>
+                    <label for="file1[]">Foto</label>
+                    @error('file1[]')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-12 col-sm-6 form-floating">
-                    <input type="number" class="form-control shadow-none" id="quantidade" name="quantidade" placeholder="quantidade" required data-input />
+                    <input type="number" class="form-control shadow-none" value="{{ old('quantidade') }}" id="quantidade"  name="quantidade" placeholder="quantidade" required data-input />
                     <label for="quantidade">Quantidade</label>
+                    @error('quantidade')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-12 col-sm-6 form-floating">
-                    <textarea class="form-control shadow-none" name="descrição" id="" cols="30" rows="10" required data-input></textarea>
-                    <!-- <textarea type="text" class="form-control shadow-none" id="cvv" name="descrição" placeholder="CVV" required data-input /textarea> -->
+                    <textarea class="form-control shadow-none" value="{{ old('descrição') }}" name="descrição" id="" cols="30" rows="10" required data-input></textarea>
                     <label for="descrição">Descrição</label>
+                    @error('descrição')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
             </div>
@@ -311,6 +363,16 @@
         // Atualiza o valor do campo com o formato correto
         input.value = valorFloat;
     }
+
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('.success-message').fadeOut('slow');
+        }, 5000);
+    });
+    setTimeout(function() {
+        document.getElementById('error-message').classList.add('hide');
+    }, 5000);
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     < /html>

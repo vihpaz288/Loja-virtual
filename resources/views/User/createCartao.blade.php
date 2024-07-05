@@ -177,29 +177,29 @@
             background-color: #ffffff;
             transition: none;
         }
+
         #error-message {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #e4605e;
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #e4605e;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
 
-    #error-message li {
-        list-style: none;
-        font-weight: bold;
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-
+        #error-message li {
+            list-style: none;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 
 <body style="min-width: 372px;">
-@if(session('error'))
+    @if(session('error'))
     <div id="error-message">
         <p>{{session('error')}}</p>
     </div>
@@ -288,22 +288,34 @@
             <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
             <div class="row mb-3">
                 <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                    <input type="text" class="form-control shadow-none" id="address" name="nome" placeholder="Rua" required data-input />
+                    <input type="text" class="form-control shadow-none" id="address" name="nome" placeholder="Banco" value="{{ old('nome') }}" required data-input />
                     <label for="address">Banco</label>
+                    @error('nome')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-12 col-sm-6 form-floating">
-                    <input type="text" class="form-control shadow-none" id="numero_cartao" name="numero" placeholder="Digite o número do cartão de crédito" required data-input maxlength="16" />
+                    <input type="text" class="form-control shadow-none" id="numero_cartao" name="numero" value="{{ old('numero') }}" placeholder="Digite o número do cartão de crédito" required data-input maxlength="16" />
                     <label for="numero_cartao">Número do Cartão de Crédito</label>
+                    @error('numero')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                    <input type="month" class="form-control shadow-none" id="vencimento" name="vencimento" placeholder="Digite o complemento" required />
+                    <input type="month" class="form-control shadow-none" id="vencimento" name="vencimento" value="{{ old('vencimento') }}" placeholder="Digite o complemento" required />
                     <label for="vencimento">Vencimento</label>
+                    @error('vencimento')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-12 col-sm-6 form-floating">
-                    <input type="text" class="form-control shadow-none" id="cvv" name="cvv" placeholder="CVV" required data-input />
+                    <input type="text" class="form-control shadow-none" id="cvv" name="cvv" value="{{old('cvv')}}" placeholder="CVV" required data-input />
                     <label for="cvv">CVV</label>
+                    @error('cvv')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="row mb-3">

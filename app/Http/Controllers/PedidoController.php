@@ -156,6 +156,7 @@ class PedidoController extends Controller
             'endereco' => $endereco,
             'status' => $status,
         ]);
+        dd($status);
     }
     public function edit(Request $request, $id)
     {

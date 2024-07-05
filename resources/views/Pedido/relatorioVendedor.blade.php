@@ -178,7 +178,7 @@
         </div>
     </nav>
     <div class="container">
-        @if(!isset($pedido))
+        @if(isset($pedido))
         <div class="header">
             <h1>Meus Pedidos</h1>
         </div>
@@ -271,6 +271,8 @@
                 // console.log(response);
                 $('#id_pedido').val(response.pedido.id);
                 $('#valor_status').html(response.status.status);
+                $('#valor_Estado').html(response.endereco.Estado);
+
                 $('#valor_CEP').html(response.endereco.CEP);
                 $('#valor_cidade').html(response.endereco.cidade);
                 $('#valor_rua').html(response.endereco.rua); // Ajustado para response.endereco.estado

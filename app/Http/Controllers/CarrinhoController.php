@@ -66,6 +66,21 @@ class CarrinhoController extends Controller
     
         return redirect()->route('index')->with('success', 'Produto adicionado ao carrinho com sucesso.');
     }
+    public function atualizarQuantidade($itemId, Request $request) {
+        $item = ProdutoCarrinho::findOrFail($itemId);
+
+        $item->update([
+            'quantidade' => $request->quantidade,
+            'valor'      => $request->itemValor * $request->quantidade
+        ]);
+        // Retornar o valor atualizado para o JavaScript
+        return response()->json(['valor' => $item->valor]); // Ajuste para o campo correto que armazena o valor total do item
+    }
+    
+    
+    
+    
+    
     
     public function index()
     {

@@ -6,16 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Criar endereço</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
     <!-- Bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" />
     <style>
-    :root {
+        :root {
             --bg-color: #04044c;
             --secondary-bg-color: #494a7d;
             --primary-color: #fff;
@@ -23,68 +20,83 @@
             --text-color: #8789af;
             --border-color: #20235b;
         }
+
         #checkout-page {
             color: black;
         }
-      
+
         #fade .spinner-border {
             width: 60px;
             height: 60px;
+
         }
+
         .hide {
             display: none !important;
         }
+
         #message {
             width: 40%;
         }
+
         .alert.alert-light p {
             border-bottom: 1px solid #333;
             padding: 1.2em 0;
         }
+
         #order-form-container {
             padding: 1.5em;
         }
+
         #steps {
             display: flex;
             border-bottom: 1px solid var(--border-color);
             position: relative;
         }
-       
+
         #form-header p {
             color: black;
         }
+
         #order-form-container {
             max-width: 700px;
         }
+
         #order-form-container input,
         #order-form-container select {
             background-color: white;
             border: 2px solid #808080;
             color: black;
         }
+
         #order-form-container select {
             padding: 1rem 0.75rem;
         }
+
         #order-form-container label {
             color: black;
         }
+
         #order-form-container input:disabled,
         #order-form-container select:disabled {
             background-color: #808080;
             color: black;
         }
+
         #order-form-container input:focus {
             border-color: #808080;
         }
+
         #order-form-container .form-floating>label {
             left: 1em;
         }
-      
+
         @media (min-width: 500px) {
             #save-btn {
                 width: 8em;
             }
         }
+
         .finalizar {
             background-color: #000000;
             border: none;
@@ -106,6 +118,7 @@
             -o-transition: all 0.3s ease-in-out;
             transition: all 0.3s ease-in-out;
         }
+
         .finalizar:after {
             display: block;
             left: 0;
@@ -117,6 +130,7 @@
             color: white;
             transition: width 0.2s;
         }
+
         .finalizar {
             -moz-transform: scale(0.95);
             -webkit-transform: scale(0.95);
@@ -124,40 +138,49 @@
             -ms-transform: scale(0.95);
             transform: scale(0.95);
         }
+
         .finalizar:hover {
             background-color: #808080;
             color: white;
         }
+
         .navbar-nav li.nav-item {
-        position: relative;
-        transition: all 0.3s ease;
-    }
+            position: relative;
+            transition: all 0.3s ease;
+        }
 
-    .navbar-nav li.nav-item::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 0%;
-        height: 2px;
-        background-color: #ffffff; /* Cor da animação */
-        transition: all 0.3s ease;
-    }
+        .navbar-nav li.nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #ffffff;
+            /* Cor da animação */
+            transition: all 0.3s ease;
+        }
 
-    .navbar-nav li.nav-item:hover::after {
-        width: 100%;
-    }
-    .navbar-nav .nav-link.active::after,
-    .navbar-nav .nav-link[href="{{ route('dados', Auth::user()->id) }}"]::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #ffffff; 
-        transition: none; 
-    }
+        .navbar-nav li.nav-item:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active::after,
+        .navbar-nav .nav-link[href="{{ route('dados', Auth::user()->id) }}"]::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ffffff;
+            transition: none;
+        }
+
+        .spinner-border {
+            border-color: #000000;
+            /* Cor preta */
+        }
     </style>
 </head>
 
@@ -216,18 +239,18 @@
     </nav>
 
     <div id="fade" class="hide">
-        <div id="loader" class="spinner-border text-info hide" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <div id="message" class="hide">
-            <div class="alert alert-light" role="alert">
-                <h4>Mensagem:</h4>
-                <p></p>
-                <button id="close-message" type="button" class="btn btn-secondary">
-                    Fechar
-                </button>
+        <div class="d-flex justify-content-center">
+            <div id="loader" class="spinner-border text-info hide" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div id="loading" class="hide">
+                <div class="spinner-border " role="status">
+                    <span class="sr-only">Carregando...</span>
+                </div>
+                <p>Enviando...</p>
             </div>
         </div>
+
     </div>
     <div id="order-form-container" class="container p-6 my-md-4 px-md-0">
         <div id="steps" class="mb-md-3 pb-md-3"></div>
@@ -240,22 +263,25 @@
             <input type="hidden" name="userId" value="{{ auth()->user()->id }}">
             <div class="row mb-3">
                 <div class="form-floating">
-                    <input type="text" class="form-control shadow-none" id="cep" name="CEP"
-                        placeholder="Digite o seu CEP" maxlength="8" minlength="8" required />
+                    <input type="text" class="form-control shadow-none" id="cep" name="CEP" placeholder="Digite o seu CEP" maxlength="8" minlength="8" value="{{ old('CEP') }}" required />
                     <label for="cep">Digite o seu CEP</label>
+                    @error('CEP')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 
             <div class="row mb-3">
 
                 <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                    <input type="text" class="form-control shadow-none" id="nome" name="nome"
-                        placeholder="Digite como deseja chamar" disabled data-input />
+                    <input type="text" class="form-control shadow-none" id="nome" name="nome" placeholder="Digite como deseja chamar" value="{{ old('nome') }}" data-input />
                     <label for="complement">Nome</label>
+                    @error('nome')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-12 col-sm-6 mb-3">
-                    <select class="form-select shadow-none" id="region" name="Estado" disabled
-                        required data-input>
+                    <select class="form-select shadow-none" id="region" name="Estado" value="{{ old('Estado') }}" required data-input>
                         <option selected>Estado</option>
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>
@@ -285,35 +311,48 @@
                         <option value="SE">Sergipe</option>
                         <option value="TO">Tocantins</option>
                     </select>
+                    @error('Estado')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                    <input type="text" class="form-control shadow-none" id="address" name="rua"
-                        placeholder="Rua" disabled required data-input />
+                    <input type="text" class="form-control shadow-none" id="address" name="rua" placeholder="Rua" value="{{old ('rua') }}" required data-input />
                     <label for="address">Rua</label>
+                    @error('rua')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-12 col-sm-6 form-floating">
-                    <input type="text" class="form-control shadow-none" id="number" name="numero"
-                        placeholder="Digite o número da residência" disabled required data-input />
+                    <input type="text" class="form-control shadow-none" value="{{ old('numero') }}" id="number" name="numero" placeholder="Digite o número da residência" required data-input />
                     <label for="number">Digite o número da residência</label>
+                    @error('numero')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                    <input type="text" class="form-control shadow-none" id="complement" name="complemento"
-                        placeholder="Digite o complemento" disabled data-input />
+                    <input type="text" class="form-control shadow-none" id="complement" value="{{old('complemento')}}" name="complemento" placeholder="Digite o complemento" data-input />
                     <label for="complement">Digite o complemento</label>
+                    @error('complemento')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-12 col-sm-6 form-floating">
-                    <input type="text" class="form-control shadow-none" id="neighborhood" name="bairro"
-                        placeholder="Bairro" disabled required data-input />
+                    <input type="text" class="form-control shadow-none" value="{{ old('bairro') }}" id="neighborhood" name="bairro" placeholder="Bairro" required data-input />
                     <label for="neighborhood">Bairro</label>
+                    @error('bairro')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-12 col-sm-6 mb-3 mb-md-0 form-floating">
-                    <input type="text" class="form-control shadow-none" id="city" name="cidade"
-                        placeholder="Cidade" disabled required data-input />
+                    <input type="text" class="form-control shadow-none" id="city" value="{{ old('cidade') }}" name="cidade" placeholder="Cidade" required data-input />
                     <label for="city">Cidade</label>
+                    @error('cidade')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div id="steps" class="mb-md-3 pb-md-3"></div>
                 <div class="d-flex justify-content-end">
@@ -364,63 +403,59 @@
     });
 
     // Get address from API
-   // Get address from API
-const getAddress = async (cep) => {
-    toggleLoader();
+    // Get address from API
+    const getAddress = async (cep) => {
+        toggleLoader();
 
-    cepInput.blur();
+        cepInput.blur();
 
-    const apiUrl = `https://viacep.com.br/ws/${cep}/json/`;
+        const apiUrl = `https://viacep.com.br/ws/${cep}/json/`;
 
-    const response = await fetch(apiUrl);
+        const response = await fetch(apiUrl);
 
-    const data = await response.json();
+        const data = await response.json();
 
-    console.log(data);
-    console.log(formInputs);
-    console.log(data.erro);
+        console.log(data);
+        console.log(formInputs);
+        console.log(data.erro);
 
-    // Show error and reset form
-    if (data.erro === "true") {
-        if (!addressInput.hasAttribute("disabled")) {
+        // Show error and reset form
+        if (data.erro === "true") {
+            if (!addressInput.hasAttribute("disabled")) {
+                toggleDisabled();
+            }
+
+            addressForm.reset();
+            toggleLoader();
+            toggleMessage("CEP Inválido, tente novamente.");
+            return;
+        }
+
+        // Activate disabled attribute if form is empty
+        if (addressInput.value === "") {
             toggleDisabled();
         }
 
-        addressForm.reset();
+        addressInput.value = data.logradouro;
+        cityInput.value = data.localidade;
+        neighborhoodInput.value = data.bairro;
+        regionInput.value = data.uf;
+
+        // Remove the disabled attribute from regionInput
+        regionInput.removeAttribute("disabled");
+
         toggleLoader();
-        toggleMessage("CEP Inválido, tente novamente.");
-        return;
-    }
-
-    // Activate disabled attribute if form is empty
-    if (addressInput.value === "") {
-        toggleDisabled();
-    }
-
-    addressInput.value = data.logradouro;
-    cityInput.value = data.localidade;
-    neighborhoodInput.value = data.bairro;
-    regionInput.value = data.uf;
-
-    // Remove the disabled attribute from regionInput
-    regionInput.removeAttribute("disabled");
-
-    toggleLoader();
-};
+    };
 
 
     // Add or remove disable attribute
     const toggleDisabled = () => {
-        if (regionInput.hasAttribute("disabled")) {
-            formInputs.forEach((input) => {
-                input.removeAttribute("disabled");
-            });
-        } else {
-            formInputs.forEach((input) => {
-                input.setAttribute("disabled", "disabled");
-            });
-        }
+        // Remover o atributo disabled de todos os inputs e selects
+        formInputs.forEach((input) => {
+            input.removeAttribute("disabled");
+        });
     };
+
 
     const toggleLoader = () => {
         const fadeElement = document.querySelector("#fade");

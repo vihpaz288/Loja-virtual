@@ -180,47 +180,10 @@
     .underlineHover:hover:after {
         width: 100%;
     }
-
-    *:focus {
-        outline: none;
-    }
-
-    #icon {
-        width: 60%;
-    }
-
-    .hide {
-        display: none;
-    }
-
-    #error-message {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #e4605e;
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
-
-    #error-message li {
-        list-style: none;
-        font-weight: bold;
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
 </style>
 
 <div class="wrapper fadeInDown">
     <div id="formContent">
-        @if ($errors->any())
-        <div id="error-message">
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </div>
-        @endif
 
         <form action="{{ route('store.user') }}" method="POST">
             @csrf
@@ -246,7 +209,7 @@
             <div class="text-danger">{{ $message }}</div>
             @enderror
 
-            <input type="password" id="password" class="fadeIn third" name="password" placeholder="Senha">
+            <input type="password" id="password" class="fadeIn third" name="password" placeholder="Senha" value="{{ old('password') }}">
             @error('password')
             <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -275,11 +238,7 @@
         return value
     }
 </script>
-<script>
-    setTimeout(function() {
-        document.getElementById('error-message').classList.add('hide');
-    }, 5000); 
-</script>
+
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 

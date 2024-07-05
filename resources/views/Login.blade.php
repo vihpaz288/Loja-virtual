@@ -7,7 +7,6 @@
   <title>Login - Minha Loja Virtual</title>
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <style>
   html {
@@ -171,72 +170,10 @@
     width: 100%;
   }
 
-  *:focus {
-    outline: none;
-  }
-
-  #icon {
-    width: 60%;
-  }
-
-  #error-message {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #e4605e;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-
-  #error-message li {
-    list-style: none;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-
-  #success-message {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #65c368;
-    color: #fff;
-    padding: 10px 10px;
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-
-  #success-message li {
-    list-style: none;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-
-  .hide {
-    display: none;
-  }
 </style>
 
 <div class="wrapper fadeInDown">
-  @if ($errors->any())
-  <div id="error-message">
-    @foreach ($errors->all() as $error)
-    <li>{{ $error }}</li>
-    @endforeach
-  </div>
-  @endif
-
-  @if(session('success'))
-  <div id="success-message">
-    <p>{{session('success')}}</p>
-  </div>
-  @endif
-
   <div id="formContent">
-    
     <form action="{{route('logar')}}" method="POST">
       @csrf
       <input type="email" id="login" class="fadeIn second" name="email" placeholder="Email" value="{{ old('email') }}">
@@ -249,24 +186,11 @@
       @enderror
       <input type="submit" class="fadeIn fourth" value="Entrar">
     </form>
-
     <div id="formFooter">
       <a class="underlineHover" href="{{route('create.user')}}">Ainda não tem conta? clique aqui</a>
     </div>
   </div>
 </div>
-
 </body>
-
-<script>
-  $(document).ready(function() {
-    setTimeout(function() {
-      $('.success-message').fadeOut('slow');
-    }, 5000);
-  });
-  setTimeout(function() {
-    document.getElementById('error-message').classList.add('hide');
-  }, 5000);
-</script>
 
 </html>

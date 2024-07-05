@@ -49,7 +49,7 @@
 
     #error-message {
         position: fixed;
-        bottom: 20px;
+        bottom: 70px;
         right: 20px;
         background-color: #e4605e;
         color: #fff;
@@ -67,7 +67,7 @@
 
     #success-message {
         position: fixed;
-        bottom: 20px;
+        bottom: 70px;
         right: 20px;
         background-color: #65c368;
         color: #fff;
@@ -86,6 +86,10 @@
     .hide {
         display: none;
     }
+
+    .modal-body input[type=number]:hover {
+        background-color: #ffffff;
+    }
 </style>
 
 <body style="min-width: 372px;">
@@ -100,7 +104,7 @@
         <p>{{session('success')}}</p>
     </div>
     @endif
-    
+
     <nav style="background-color: #000000;" class="navbar navbar-expand-lg navbar-dark border-bottom shadow-sm mb-3">
         <div class="container">
             <a class="navbar-brand" href=""><strong>Loja virtual</strong></a>
@@ -239,7 +243,7 @@
                                         <form action="{{ route('carrinho.store') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="produtoId" value="{{ $produto->id }}">
-                                            <input class="btn mt-2 d-block" type="number" id="quantity" name="quantidade" value="1" min="1" style="display: center;
+                                            <input class="btn mt-2 d-block" type="number" id="quantidade" name="quantidade" value="1" min="1" style="display: center;
                                                                                 flex-direction: column;
                                                                                 align-items: center;
                                                                                 font-size: 18px;
@@ -264,7 +268,7 @@
             </div>
             @endforeach
         </div>
-        <footer class="border-top text-muted bg-ligth fixed-bottom" style="">
+        <footer class="border-top text-muted bg-ligth fixed-bottom">
             <div class="container">
                 <div class="row py-3">
                     <div class="col-12 cold-md-4 text-center text-md-left">
